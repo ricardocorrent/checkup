@@ -1,6 +1,9 @@
 package com.checkup.server.model;
 
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @MappedSuperclass
 public abstract class BaseModel implements Serializable {

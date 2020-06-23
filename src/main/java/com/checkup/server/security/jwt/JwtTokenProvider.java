@@ -1,5 +1,6 @@
 package com.checkup.server.security.jwt;
 
+import com.checkup.server.validation.exception.InvalidJwtAuthenticationException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class JwtTokenProvider {
@@ -66,7 +70,7 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) throws InvalidJwtAuthenticationException {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             if (claims.getBody().getExpiration().before(new Date())) {

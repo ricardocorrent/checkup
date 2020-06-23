@@ -1,5 +1,6 @@
 package com.checkup.userinformation;
 
+import com.checkup.server.model.BaseVO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
@@ -8,9 +9,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @JsonPropertyOrder({"id", "title", "description", "createdAt", "updatedAt"})
-public class UserInformationVO extends ResourceSupport implements BaseVO {
+public class UserInformationVO implements BaseVO {
 
     @Mapping("id")
     @JsonProperty("id")

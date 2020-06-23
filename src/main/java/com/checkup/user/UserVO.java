@@ -1,11 +1,17 @@
 package com.checkup.user;
 
+import com.checkup.userinformation.UserInformationVO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
+
 @JsonPropertyOrder({"id", "userName", "fullName", "information", "createdAt", "updatedAt"})
-public class UserVO extends ResourceSupport implements Serializable {
+public class UserVO implements Serializable {
 
     @Mapping("id")
     @JsonProperty("id")

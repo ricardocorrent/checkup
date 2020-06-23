@@ -1,5 +1,8 @@
 package com.checkup.server.security;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 public class AccountCredentialsVO implements Serializable {
 
     private String userName;

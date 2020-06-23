@@ -3,6 +3,9 @@ package com.checkup.server.adapter;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DozerAdapter {
 
     private static final Mapper mapper = DozerBeanMapperBuilder.buildDefault();

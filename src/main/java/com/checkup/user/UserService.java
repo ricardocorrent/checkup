@@ -1,11 +1,16 @@
 package com.checkup.user;
 
+import com.checkup.server.adapter.DozerAdapter;
+import com.checkup.server.validation.exception.RegisterNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.time.OffsetDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
