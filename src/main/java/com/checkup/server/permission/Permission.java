@@ -14,7 +14,7 @@ import java.util.UUID;
 public class Permission implements GrantedAuthority, Serializable {
 
     @Id
-    @Column(name = "id", columnDefinition = "BINARY(16)")
+    @Column(name = "id")
     private UUID id;
 
     @Column(name = "description")

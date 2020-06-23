@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class User implements UserDetails, Serializable {
 
     @Id
-    @Column(name = "id", columnDefinition = "BINARY(16)")
+    @Column(name = "id")
     private UUID id;
 
     @Column(name = "user_name", unique = true)
