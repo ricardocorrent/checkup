@@ -2,7 +2,6 @@ package com.checkup.target;
 
 import com.checkup.server.model.PhysicalBaseEntity;
 import com.checkup.target.information.TargetInformation;
-import com.checkup.userinformation.UserInformation;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

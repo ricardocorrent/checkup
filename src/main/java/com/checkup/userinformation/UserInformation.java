@@ -35,6 +35,10 @@ public class UserInformation {
     @Size(max = 150)
     private String description;
 
+    private Integer positionIndex;
+
+    private Boolean active = Boolean.TRUE;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt;
@@ -65,6 +69,22 @@ public class UserInformation {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getPositionIndex() {
+        return positionIndex;
+    }
+
+    public void setPositionIndex(final Integer positionIndex) {
+        this.positionIndex = positionIndex;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(final Boolean active) {
+        this.active = active;
     }
 
     public OffsetDateTime getCreatedAt() {

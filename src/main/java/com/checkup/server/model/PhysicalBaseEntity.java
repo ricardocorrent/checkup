@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @MappedSuperclass
-public class PhysicalBaseEntity extends BaseModel {
+public class PhysicalBaseEntity implements BaseModel {
 
     @Id
     private UUID id;

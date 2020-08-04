@@ -6,18 +6,18 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @MappedSuperclass
-public abstract class BaseModel implements Serializable {
+public interface BaseModel extends Serializable {
 
-    public abstract UUID getId();
+    UUID getId();
 
-    public abstract void setId(final UUID id);
+    void setId(final UUID id);
 
-    public abstract OffsetDateTime getCreatedAt();
+    OffsetDateTime getCreatedAt();
 
-    public abstract void setCreatedAt(final OffsetDateTime createdAt);
+    void setCreatedAt(final OffsetDateTime createdAt);
 
-    public abstract OffsetDateTime getUpdatedAt();
+    OffsetDateTime getUpdatedAt();
 
-    public abstract void setUpdatedAt(final OffsetDateTime updatedAt);
+    void setUpdatedAt(final OffsetDateTime updatedAt);
 
 }
