@@ -41,14 +41,24 @@ public class UserService implements UserDetailsService {
         final User userFromDb = this.repository.findById(userVO.getKey()).orElseThrow(RegisterNotFoundException::new);
         final User user = DozerAdapter.parseObject(userVO, User.class);
         this.doGenerateUpdateValues(user, userFromDb);
+//        return DozerAdapter.parseObject(this.repository.save(userFromDb), UserVO.class);
         return DozerAdapter.parseObject(this.repository.save(userFromDb), UserVO.class);
     }
 
-    private void doGenerateUpdateValues(final User user, final User userFromDb) {
+        private void doGenerateUpdateValues(final User user, final User userFromDb) {
+        userFromDb.setUserName(user.getUserName());
+        userFromDb.setFullName(user.getFullName());
         userFromDb.getInformation().clear();
         userFromDb.getInformation().addAll(user.getInformation());
         userFromDb.setUpdatedAt(OffsetDateTime.now());
         userFromDb.setCreatedAt(userFromDb.getCreatedAt());
     }
+
+//    private void doGenerateUpdateValues(final User user, final User userFromDb) {
+//        userFromDb.getInformation().clear();
+//        userFromDb.getInformation().addAll(user.getInformation());
+//        userFromDb.setUpdatedAt(OffsetDateTime.now());
+//        userFromDb.setCreatedAt(userFromDb.getCreatedAt());
+//    }
 
 }

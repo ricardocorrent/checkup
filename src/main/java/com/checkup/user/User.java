@@ -14,14 +14,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", schema = "checkup")
 public class User implements UserDetails, Serializable {
 
     @Id
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "user_name", unique = true)
+    @Column(name = "user_name")
     private String userName;
 
     @Column(name = "full_name")
@@ -44,6 +44,7 @@ public class User implements UserDetails, Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_permission",
+            schema = "checkup",
             joinColumns = {
                     @JoinColumn(name = "user_id")
             },
@@ -53,10 +54,8 @@ public class User implements UserDetails, Serializable {
     )
     private List<Permission> permissions;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name="user_information",
-            joinColumns=@JoinColumn(name="user_id"),
-            inverseJoinColumns=@JoinColumn(name="id"))
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<UserInformation> information;
 
     private OffsetDateTime createdAt;

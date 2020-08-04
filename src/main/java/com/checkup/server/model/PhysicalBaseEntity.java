@@ -58,6 +58,7 @@ public class PhysicalBaseEntity extends BaseModel {
         final OffsetDateTime now = OffsetDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
+        this.id = UUID.randomUUID();
     }
 
     @PreUpdate

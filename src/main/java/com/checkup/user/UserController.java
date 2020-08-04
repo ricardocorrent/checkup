@@ -14,11 +14,15 @@ import java.util.UUID;
 @RequestMapping(value = "/api/user")
 public class UserController {
 
-    @Inject
-    private UserService userService;
+    private final UserService userService;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public UserController(UserService userService, UserRepository userRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+    }
 
     @GetMapping(path = "/{id}", produces = {"application/json"})
     public ResponseEntity<?> getUserById(@PathVariable("id") final UUID id) {

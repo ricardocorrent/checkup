@@ -5,8 +5,8 @@ import java.util.UUID;
 
 public interface BaseVO extends Serializable {
 
-    UUID getKey();
+    UUID getId();
 
-    void setKey(final UUID id);
+    void setId(final UUID id);
 
 }

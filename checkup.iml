@@ -9,6 +9,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
+          <factory-entry name="checkup" value="ccbc9c56-8cc7-4443-b594-ff9fd98418b9" />
           <factory-entry name="entityManagerFactory" value="ccbc9c56-8cc7-4443-b594-ff9fd98418b9" />
         </datasource-mapping>
         <naming-strategy-map />

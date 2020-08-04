@@ -15,9 +15,7 @@ import java.util.UUID;
 @JsonPropertyOrder({"id", "title", "description", "createdAt", "updatedAt"})
 public class UserInformationVO implements BaseVO {
 
-    @Mapping("id")
-    @JsonProperty("id")
-    private UUID key;
+    private UUID id;
 
     @NotNull
     @NotBlank
@@ -35,13 +33,6 @@ public class UserInformationVO implements BaseVO {
 
     private OffsetDateTime updatedAt;
 
-    public UUID getKey() {
-        return key;
-    }
-
-    public void setKey(final UUID key) {
-        this.key = key;
-    }
 
     public String getTitle() {
         return title;
@@ -74,4 +65,5 @@ public class UserInformationVO implements BaseVO {
     public void setUpdatedAt(final OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }
