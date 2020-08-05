@@ -12,8 +12,12 @@ import javax.inject.Inject;
 @RequestMapping(value = "/api/target")
 public class TargetController extends SimpleAbstractController<Target, TargetVO> {
 
+    private final TargetService targetService;
+
     @Inject
-    private TargetService targetService;
+    public TargetController(final TargetService targetService) {
+        this.targetService = targetService;
+    }
 
     @Override
     protected String getListAllSortProperty() {

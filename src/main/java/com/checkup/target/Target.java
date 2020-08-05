@@ -24,7 +24,7 @@ public class Target extends PhysicalBaseEntity {
     private Boolean active = Boolean.TRUE;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "target_id")
+    @JoinColumn(name = "target_id", nullable = false)
     private List<TargetInformation> information;
 
     public String getName() {
