@@ -23,7 +23,7 @@ public abstract class SimpleAbstractService<T extends BaseModel, Z extends BaseV
 
     public Z update(final Z z) {
         final T tFromDb = repository
-                .findById(z.getKey()).orElseThrow(RegisterNotFoundException::new);
+                .findById(z.getId()).orElseThrow(RegisterNotFoundException::new);
 
         final T t = this.convertEntityVOToEntity(z);
 

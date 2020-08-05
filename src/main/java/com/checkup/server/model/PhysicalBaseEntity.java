@@ -11,6 +11,8 @@ import java.util.UUID;
 public class PhysicalBaseEntity implements BaseModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", updatable = false, unique = true, nullable = false)
     private UUID id;
 
     @CreationTimestamp
@@ -58,7 +60,6 @@ public class PhysicalBaseEntity implements BaseModel {
         final OffsetDateTime now = OffsetDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
-        this.id = UUID.randomUUID();
     }
 
     @PreUpdate

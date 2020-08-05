@@ -18,18 +18,18 @@ import java.util.UUID;
 public abstract class SimpleAbstractController<T extends BaseModel, Z extends BaseVO> {
 
     @Inject
-    private SimpleAbstractService<T, Z> abstractService;
+    private SimpleAbstractService<T, Z> simpleAbstractService;
 
     @PostMapping
     private ResponseEntity<?> insert(@Valid @RequestBody final Z z) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(abstractService.insert(z));
+                .body(simpleAbstractService.insert(z));
     }
 
     @DeleteMapping(path = "/{id}")
     private ResponseEntity<?> delete(@PathVariable final UUID id) {
-        this.abstractService.delete(id);
+        this.simpleAbstractService.delete(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
@@ -37,16 +37,16 @@ public abstract class SimpleAbstractController<T extends BaseModel, Z extends Ba
 
     @GetMapping(path = "/{id}", produces = {"application/json", "application/xml"})
     public ResponseEntity<?> getEntityById(@PathVariable("id") final UUID id) {
-        final Z z = abstractService.getById(id);
+        final Z z = simpleAbstractService.getById(id);
         return ResponseEntity.ok(z);
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> update(@PathVariable final UUID id, @Valid @RequestBody final Z z) {
-        z.setKey(id);
+        z.setId(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(abstractService.update(z));
+                .body(simpleAbstractService.update(z));
     }
 
     @GetMapping(path = "/list-all")
@@ -56,7 +56,7 @@ public abstract class SimpleAbstractController<T extends BaseModel, Z extends Ba
                                      PagedResourcesAssembler<Z> assembler) {
         final Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         final Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, getListAllSortProperty()));
-        final Page<Z> listOfEntities = abstractService.list(pageable);
+        final Page<Z> listOfEntities = simpleAbstractService.list(pageable);
 
         return ResponseEntity.ok(listOfEntities);
     }
