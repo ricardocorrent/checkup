@@ -26,7 +26,7 @@ public abstract class BaseVO implements Serializable {
         return createdAt;
     }
 
-    public void setCreatedAt(OffsetDateTime createdAt) {
+    public void setCreatedAt(final OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -34,7 +34,7 @@ public abstract class BaseVO implements Serializable {
         return updatedAt;
     }
 
-    public void setUpdatedAt(OffsetDateTime updatedAt) {
+    public void setUpdatedAt(final OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

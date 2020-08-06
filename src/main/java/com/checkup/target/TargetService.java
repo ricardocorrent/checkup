@@ -1,7 +1,6 @@
 package com.checkup.target;
 
 import com.checkup.server.SimpleAbstractService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
