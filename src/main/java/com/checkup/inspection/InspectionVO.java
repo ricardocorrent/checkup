@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@JsonPropertyOrder({"id", "title", "description", "draft", "syncQuantities", "note", "allowedToSync", "information", "user", "target"})
+@JsonPropertyOrder({"id", "title", "description", "draft", "syncQuantities", "allowedToSync", "note", "information", "user", "target"})
 public class InspectionVO extends BaseVO {
 
     @NotNull
