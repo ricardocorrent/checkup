@@ -1,22 +1,14 @@
-package com.checkup.topic;
+package com.checkup.topic.vo;
 
-import com.checkup.inspection.Inspection;
-import com.checkup.item.Item;
-import com.checkup.server.model.PhysicalBaseEntity;
+import com.checkup.server.model.BaseVO;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.persistence.*;
+@JsonPropertyOrder({"id", "inspection", "item", "printInReport", "positionIndex", "active", "createdAt", "updatedAt"})
+public class TopicVO extends BaseVO {
 
-@Entity
-@Table(name = "topic", schema = "checkup")
-public class Topic extends PhysicalBaseEntity {
+    private TopicInspectionVO inspection;
 
-    @ManyToOne
-    @JoinColumn(name = "inspection_id", nullable = false)
-    private Inspection inspection;
-
-    @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
+    private TopicItemVO item;
 
     private Boolean printInReport;
 
@@ -24,19 +16,19 @@ public class Topic extends PhysicalBaseEntity {
 
     private String note;
 
-    public Inspection getInspection() {
+    public TopicInspectionVO getInspection() {
         return inspection;
     }
 
-    public void setInspection(final Inspection inspection) {
+    public void setInspection(final TopicInspectionVO inspection) {
         this.inspection = inspection;
     }
 
-    public Item getItem() {
+    public TopicItemVO getItem() {
         return item;
     }
 
-    public void setItem(final Item item) {
+    public void setItem(final TopicItemVO item) {
         this.item = item;
     }
 

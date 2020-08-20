@@ -2,7 +2,6 @@ package com.checkup.item;
 
 import com.checkup.item.information.ItemInformation;
 import com.checkup.rule.Rule;
-import com.checkup.rule.information.RuleInformation;
 import com.checkup.server.model.PhysicalBaseEntity;
 
 import javax.persistence.*;
@@ -37,7 +36,6 @@ public class Item extends PhysicalBaseEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "item_id", nullable = false)
     private List<ItemInformation> information;
-
 
     @NotNull
     @ManyToOne

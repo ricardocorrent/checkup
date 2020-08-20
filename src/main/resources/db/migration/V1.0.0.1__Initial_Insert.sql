@@ -167,3 +167,9 @@ INSERT INTO item (id, rule_id, title, description, position_index, active, creat
 	('52e34386-2a2f-4a76-bf5a-325946d4a2d1', 'dc4ccc56-0532-4393-a34b-399b3a2d01f0', '5.25', 'As reuniões da CIPA terão atas assinadas pelos presentes com encaminhamento de cópias para todos os membros.', 4, true, now(), now()),
 	('719b4bd3-7b9c-4c6c-80fa-1c157fe396c6', 'dc4ccc56-0532-4393-a34b-399b3a2d01f0', '5.26', 'As atas devem ficar no estabelecimento à disposição da fiscalização do Ministério do Trabalho e Emprego.', 5, true, now(), now()),
 	('ebca63b8-12e9-4df4-b4e2-c6363df801b1', 'dc4ccc56-0532-4393-a34b-399b3a2d01f0', '5.32', 'A empresa deverá promover treinamento para os membros da CIPA, titulares e suplentes, antes da posse.', 6, true, now(), now());
+
+INSERT into inspection (id, user_id, target_id, title, description, draft, sync_quantities, note, allowed_to_sync, created_at, updated_at) values
+	('ff0557b4-483c-415e-ae59-e997d0d8e9ac', '42bad0ad-e7f2-4cfb-b9f5-66cfc2b6c5ad', 'f394ed16-ce91-404b-baac-92c80dd1b3b6', 'Inspection into CIPA', 'The first one', true, 0, 'The first Inspection', false, now(), now());
+
+INSERT INTO topic (id, inspection_id, item_id, print_in_report, position_index, note, created_at, updated_at) values
+	('12e3a50c-3442-4e28-9fc2-c89f127d88d1', 'ff0557b4-483c-415e-ae59-e997d0d8e9ac', '33596276-35a3-4980-adc2-06febc10a229', true, 0, 'The first topic', now(), now());

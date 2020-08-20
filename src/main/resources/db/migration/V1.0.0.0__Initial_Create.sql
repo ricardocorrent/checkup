@@ -90,6 +90,32 @@ CREATE TABLE topic (
   PRIMARY KEY (id)
 );
 
+------------------------------ IMAGE
+CREATE TABLE image (
+  id 				UUID NOT NULL,
+  file 				BYTEA,
+  file_name 		VARCHAR(255),
+  position_index    INTEGER NOT NULL,
+  note              VARCHAR(4000) NULL,
+  created_at        TIMESTAMPTZ NOT NULL,
+  updated_at        TIMESTAMPTZ NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE merchant_documents (
+	id uuid NOT NULL,
+	created_at timestamp NULL,
+	updated_at timestamp NULL,
+	document_format varchar(255) NULL,
+	document_type varchar(255) NULL,
+	file_name varchar(255) NULL,
+	note varchar(4000) NULL,
+	position_index int4 NULL,
+	upload_dir varchar(255) NULL,
+	topic_id uuid NOT NULL,
+	PRIMARY KEY (id)
+);
+
 ------------------------------ USER INFORMATION
 CREATE TABLE user_information (
   	id 				UUID NOT NULL,

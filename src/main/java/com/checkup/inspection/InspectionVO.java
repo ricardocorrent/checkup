@@ -1,19 +1,12 @@
 package com.checkup.inspection;
 
-import com.checkup.inspection.information.InspectionInformation;
 import com.checkup.inspection.information.InspectionInformationVO;
 import com.checkup.server.model.BaseVO;
-import com.checkup.target.Target;
 import com.checkup.target.TargetVO;
-import com.checkup.user.User;
 import com.checkup.user.UserVO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
