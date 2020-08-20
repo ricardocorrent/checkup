@@ -100,7 +100,7 @@ INSERT INTO target_information (id, target_id, title, description, position_inde
 
 ------------------------------ INSERT RULE
 INSERT INTO "rule" (id, title, description, active, created_at, updated_at) VALUES
-	('00c278b1-b6bf-4ca6-a275-9f43b60b4ddb', 'NR-12', null, true, now(), now()),
+	('00c278b1-b6bf-4ca6-a275-9f43b60b4ddb', 'NR-12', 'Norma Regulamentadora número 12', true, now(), now()),
 	('7ca6a5a0-589c-4a8b-87a2-246a897e36be', 'CLT', 'Consolidação das Leis do Trabalho', true, now(), now()),
 	('dc4ccc56-0532-4393-a34b-399b3a2d01f0', 'NR-05', 'Norma Reguladora que trata de fornos e fogões', true, now(), now());
 
@@ -168,8 +168,21 @@ INSERT INTO item (id, rule_id, title, description, position_index, active, creat
 	('719b4bd3-7b9c-4c6c-80fa-1c157fe396c6', 'dc4ccc56-0532-4393-a34b-399b3a2d01f0', '5.26', 'As atas devem ficar no estabelecimento à disposição da fiscalização do Ministério do Trabalho e Emprego.', 5, true, now(), now()),
 	('ebca63b8-12e9-4df4-b4e2-c6363df801b1', 'dc4ccc56-0532-4393-a34b-399b3a2d01f0', '5.32', 'A empresa deverá promover treinamento para os membros da CIPA, titulares e suplentes, antes da posse.', 6, true, now(), now());
 
-INSERT into inspection (id, user_id, target_id, title, description, draft, sync_quantities, note, allowed_to_sync, created_at, updated_at) values
-	('ff0557b4-483c-415e-ae59-e997d0d8e9ac', '42bad0ad-e7f2-4cfb-b9f5-66cfc2b6c5ad', 'f394ed16-ce91-404b-baac-92c80dd1b3b6', 'Inspection into CIPA', 'The first one', true, 0, 'The first Inspection', false, now(), now());
-
-INSERT INTO topic (id, inspection_id, item_id, print_in_report, position_index, note, created_at, updated_at) values
-	('12e3a50c-3442-4e28-9fc2-c89f127d88d1', 'ff0557b4-483c-415e-ae59-e997d0d8e9ac', '33596276-35a3-4980-adc2-06febc10a229', true, 0, 'The first topic', now(), now());
+-- INSPECTION TO ARTHUR E MURILO PÃES E DOCES LTDA USING RICARDO AS USER
+-- TARGET 	ID d161c75f-6c7c-407a-b2bd-99dd96162fd6
+-- USER 	ID 42bad0ad-e7f2-4cfb-b9f5-66cfc2b6c5ad
+INSERT INTO inspection (id, user_id, target_id, title, description, draft, sync_quantities, note, allowed_to_sync, created_at, updated_at) VALUES
+    ('ad95d40d-15ef-44bf-a3f1-62aecf09f26f', '42bad0ad-e7f2-4cfb-b9f5-66cfc2b6c5ad', 'd161c75f-6c7c-407a-b2bd-99dd96162fd6', 'Panificadora', 'Inspeção presencial', true, 0, 'Inspeção na sede da empresa para verificar se denúncias referentes à trabalhadores sem carteira assinada procedem. Existem denúncias também à respeito de local insalubre, falta de equipamentos de segurança e funcionários com mais de 2 anos sem retirar férias.', false, now(), now());
+-- INFORMATION FROM INSPECTION INTO ARTHUR E MURILO PÃES E DOCES
+INSERT INTO inspection_information (id, inspection_id, title, description, position_index, active, created_at, updated_at) VALUES
+    ('ad95d40d-15ef-44bf-a3f1-62aecf09f26f', 'ad95d40d-15ef-44bf-a3f1-62aecf09f26f', 'Observação', 'Levar luva e máscara de proteção P90', 0, true, now(), now());
+-- TOPICS USED ON INSPECTION ID ad95d40d-15ef-44bf-a3f1-62aecf09f26f
+INSERT INTO topic (id, inspection_id, item_id, print_in_report, position_index, note, created_at, updated_at) VALUES
+    ('58f75511-e43f-432f-90bd-6c702c3c5821', 'ad95d40d-15ef-44bf-a3f1-62aecf09f26f', 'f2967600-b92b-4cc8-a325-c5784bdd3523', true, 0, '', now(), now()),
+    ('aa1f678a-df20-42ed-acde-cb852b843182', 'ad95d40d-15ef-44bf-a3f1-62aecf09f26f', '4785e103-5745-4c28-8b6d-f82c12151916', true, 0, '', now(), now()),
+    ('0efcd62b-c03e-4e95-882d-65756388b5e2', 'ad95d40d-15ef-44bf-a3f1-62aecf09f26f', 'dab07f34-52e7-4e12-875e-f176ecfb0d1c', true, 1, '', now(), now()),
+    ('7072b71c-b09a-4592-9bf2-2005b0e560d2', 'ad95d40d-15ef-44bf-a3f1-62aecf09f26f', '34d9a053-fbdb-40b7-8282-4ec62ca1c6e2', true, 2, '', now(), now()),
+    ('196c4494-0ecd-4251-966b-90dc77bd1742', 'ad95d40d-15ef-44bf-a3f1-62aecf09f26f', '90de60fb-76f6-4b8c-a645-2aa243546f59', true, 3, '', now(), now()),
+    ('a66ea76e-a8ed-4cc8-a438-33c7f87609d1', 'ad95d40d-15ef-44bf-a3f1-62aecf09f26f', '30180d5d-abf8-4e98-bf92-8cd0cc438508', true, 4, '', now(), now()),
+    ('cf72075b-441e-4e0f-b569-02e0bbd9171f', 'ad95d40d-15ef-44bf-a3f1-62aecf09f26f', '83e1c3e5-0771-48db-afd0-000f269e58cd', true, 5, '', now(), now()),
+    ('bfcef312-b7e7-4c4c-b154-efd3120f9e7d', 'ad95d40d-15ef-44bf-a3f1-62aecf09f26f', 'd11d6fef-de06-409a-9a03-328ac7816319', true, 6, '', now(), now());

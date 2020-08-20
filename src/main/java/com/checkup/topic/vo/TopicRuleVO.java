@@ -3,8 +3,8 @@ package com.checkup.topic.vo;
 import com.checkup.server.model.BaseVO;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"id", "title", "description",})
-public class TopicInspectionVO extends BaseVO {
+@JsonPropertyOrder({"id", "title", "description"})
+public class TopicRuleVO extends BaseVO {
 
     private String title;
 

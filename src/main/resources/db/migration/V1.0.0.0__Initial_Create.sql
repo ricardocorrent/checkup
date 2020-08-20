@@ -41,7 +41,7 @@ CREATE TABLE target (
 CREATE TABLE rule (
   	id 			UUID NOT NULL,
   	title 		VARCHAR(100) NOT NULL,
-  	description	VARCHAR(4000),
+  	description	VARCHAR(4000) NOT NULL,
   	active		BOOLEAN NOT NULL DEFAULT TRUE,
   	created_at 	TIMESTAMPTZ NOT NULL,
 	updated_at 	TIMESTAMPTZ NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE merchant_documents (
 ------------------------------ USER INFORMATION
 CREATE TABLE user_information (
   	id 				UUID NOT NULL,
-  	user_id 		UUID NOT NULL,
+  	user_id 		UUID NOT NULL REFERENCES "user" (id),
   	title 			VARCHAR(100) NOT NULL,
   	description 	VARCHAR(4000) NOT NULL,
   	position_index	INTEGER NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE user_information (
 ------------------------------ TARGET INFORMATION
 CREATE TABLE target_information (
   	id	 			UUID NOT NULL,
-  	target_id 		UUID NOT NULL,
+  	target_id 		UUID NOT NULL REFERENCES target (id),
   	title 			VARCHAR(100) NOT NULL,
   	description 	VARCHAR(4000) NOT NULL,
   	position_index	INTEGER NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE target_information (
 ------------------------------ RULE INFORMATION
 CREATE TABLE rule_information (
   	id	 			UUID NOT NULL,
-  	rule_id 		UUID NOT NULL,
+  	rule_id 		UUID NOT NULL REFERENCES rule (id),
   	title 			VARCHAR(100) NOT NULL,
   	description 	VARCHAR(4000) NOT NULL,
   	position_index 	INTEGER NOT NULL,
@@ -158,7 +158,20 @@ CREATE TABLE rule_information (
 ------------------------------ ITEM INFORMATION
 CREATE TABLE item_information (
   	id	 			UUID NOT NULL,
-  	item_id 		UUID NOT NULL,
+  	item_id 		UUID NOT NULL REFERENCES item (id),
+  	title 			VARCHAR(100) NOT NULL,
+  	description 	VARCHAR(4000) NOT NULL,
+  	position_index 	INTEGER NOT NULL,
+  	active			BOOLEAN NOT NULL DEFAULT TRUE,
+  	created_at 		TIMESTAMPTZ NOT NULL,
+	updated_at 		TIMESTAMPTZ NOT NULL,
+	PRIMARY KEY (id)
+);
+
+------------------------------ INSPECTION INFORMATION
+CREATE TABLE inspection_information (
+  	id	 			UUID NOT NULL,
+  	inspection_id 	UUID NOT NULL REFERENCES inspection (id),
   	title 			VARCHAR(100) NOT NULL,
   	description 	VARCHAR(4000) NOT NULL,
   	position_index 	INTEGER NOT NULL,

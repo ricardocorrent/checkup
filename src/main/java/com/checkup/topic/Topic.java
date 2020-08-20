@@ -5,6 +5,7 @@ import com.checkup.item.Item;
 import com.checkup.server.model.PhysicalBaseEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "topic", schema = "checkup")
@@ -22,6 +23,7 @@ public class Topic extends PhysicalBaseEntity {
 
     private Integer positionIndex;
 
+    @Size(max = 4000)
     private String note;
 
     public Inspection getInspection() {
