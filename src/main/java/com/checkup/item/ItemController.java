@@ -21,7 +21,7 @@ public class ItemController extends SimpleAbstractController<Item, ItemVO> {
         this.itemService = itemService;
     }
 
-    @GetMapping(path = "/items/{ruleId}")
+    @GetMapping(path = "/rule/{ruleId}")
     public ResponseEntity<?> getItemsListFromRuleId(@PathVariable("ruleId") final UUID ruleId) {
         return ResponseEntity.ok(itemService.getItemsByRuleId(ruleId));
     }

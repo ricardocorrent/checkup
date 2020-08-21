@@ -31,7 +31,7 @@ public class UserController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> update(@PathVariable final UUID id, @Valid @RequestBody final UserVO userVO) {
-        userVO.setKey(id);
+        userVO.setId(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.update(userVO));

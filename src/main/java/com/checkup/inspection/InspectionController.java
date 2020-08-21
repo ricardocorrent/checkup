@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/inspection")
@@ -15,7 +13,7 @@ public class InspectionController extends SimpleAbstractController<Inspection, I
 
     private final InspectionService inspectionService;
 
-    @Inject
+    @Autowired
     public InspectionController(final InspectionService inspectionService) {
         this.inspectionService = inspectionService;
     }

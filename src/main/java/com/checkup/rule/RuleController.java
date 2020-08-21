@@ -21,6 +21,6 @@ public class RuleController extends SimpleAbstractController<Rule, RuleVO> {
 
     @Override
     protected String getListAllSortProperty() {
-        return "title";
+        return "information.positionIndex";
     }
 }

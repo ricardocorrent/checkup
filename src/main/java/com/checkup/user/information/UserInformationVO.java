@@ -1,4 +1,4 @@
-package com.checkup.userinformation;
+package com.checkup.user.information;
 
 import com.checkup.server.model.BaseInformationVO;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

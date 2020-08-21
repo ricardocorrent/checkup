@@ -2,12 +2,13 @@ package com.checkup.topic;
 
 import com.checkup.server.SimpleAbstractController;
 import com.checkup.topic.vo.TopicVO;
+import com.checkup.topic.vo.TopicsByInspectionIdResponseInspectionVO;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -28,5 +29,11 @@ public class TopicController extends SimpleAbstractController<Topic, TopicVO> {
     @Override
     protected String getListAllSortProperty() {
         return "positionIndex";
+    }
+
+    @GetMapping(path = "/inspection/{inspectionId}", produces = {"application/json"})
+    public ResponseEntity<?> getEntitiesByInspectionId(@PathVariable("inspectionId") final UUID id) {
+        final TopicsByInspectionIdResponseInspectionVO topicsByInspectionId = topicService.getTopicsByInspectionId(id);
+        return ResponseEntity.ok(topicsByInspectionId);
     }
 }

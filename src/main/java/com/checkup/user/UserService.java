@@ -38,10 +38,9 @@ public class UserService implements UserDetailsService {
     }
 
     public UserVO update(final UserVO userVO) {
-        final User userFromDb = this.repository.findById(userVO.getKey()).orElseThrow(RegisterNotFoundException::new);
+        final User userFromDb = this.repository.findById(userVO.getId()).orElseThrow(RegisterNotFoundException::new);
         final User user = DozerAdapter.parseObject(userVO, User.class);
         this.doGenerateUpdateValues(user, userFromDb);
-//        return DozerAdapter.parseObject(this.repository.save(userFromDb), UserVO.class);
         return DozerAdapter.parseObject(this.repository.save(userFromDb), UserVO.class);
     }
 
