@@ -1,10 +1,15 @@
 package com.checkup.inspection;
 
+import com.checkup.inspection.vo.InspectionFinalizeVO;
 import com.checkup.server.SimpleAbstractController;
+import com.checkup.server.model.IdVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -21,5 +26,12 @@ public class InspectionController extends SimpleAbstractController<Inspection, I
     @Override
     protected String getListAllSortProperty() {
         return "title";
+    }
+
+    @PutMapping(path = "/{id}/close")
+    public ResponseEntity<?> closeInspection(@PathVariable final UUID id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(inspectionService.closeInspection(new IdVO(id)));
     }
 }

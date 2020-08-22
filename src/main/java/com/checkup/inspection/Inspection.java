@@ -2,6 +2,7 @@ package com.checkup.inspection;
 
 import com.checkup.inspection.information.InspectionInformation;
 import com.checkup.server.model.PhysicalBaseEntity;
+import com.checkup.server.model.PrototypePattern;
 import com.checkup.target.Target;
 import com.checkup.user.User;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "inspection", schema = "checkup")
-public class Inspection extends PhysicalBaseEntity {
+public class Inspection extends PrototypePattern {
 
     @NotNull
     @NotEmpty
@@ -48,6 +49,18 @@ public class Inspection extends PhysicalBaseEntity {
     @ManyToOne
     @JoinColumn(name = "target_id")
     private Target target;
+
+    public Inspection(){}
+
+    public Inspection(final Inspection inspection) {
+        super(inspection);
+        if (inspection != null) {
+            this.title = inspection.getTitle();
+            this.description = inspection.getDescription();
+            this.target = inspection.getTarget();
+            this.information = inspection.getInformation();
+        }
+    }
 
     public String getTitle() {
         return title;
@@ -119,5 +132,10 @@ public class Inspection extends PhysicalBaseEntity {
 
     public void setTarget(final Target target) {
         this.target = target;
+    }
+
+    @Override
+    public PrototypePattern clone() {
+        return new Inspection(this);
     }
 }
