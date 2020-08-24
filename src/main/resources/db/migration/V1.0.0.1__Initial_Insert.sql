@@ -34,12 +34,12 @@ INSERT INTO user_information (id, user_id, title, description, position_index, a
 	('78008c0b-96f1-4135-8028-b1b30f9b4d29', '42bad0ad-e7f2-4cfb-b9f5-66cfc2b6c5ad', 'PIS', '180.65257.85-8', 4, true, now(), now());
 
 ------------------------------ INSERT TARGET
-INSERT INTO target (id, "name", active, created_at, updated_at) VALUES
-	('0289e7e0-fb15-446f-9e54-a28148e1c943', 'Bárbara e Raimundo Telas Ltda', true, now(), now()),
-	('352fd491-7cf4-4cab-852a-7adf28de3804', 'Juan e Maya Esportes Ltda', true, now(), now()),
-	('d161c75f-6c7c-407a-b2bd-99dd96162fd6', 'Arthur e Murilo Pães e Doces Ltda', true, now(), now()),
-	('ca278ff3-7533-42d0-8456-56f1fd58acc4', 'Martin e Sebastiana Alimentos ME', true, now(), now()),
-	('f394ed16-ce91-404b-baac-92c80dd1b3b6', 'Ana e Luciana Doces & Salgados ME', true, now(), now());
+INSERT INTO target (id, "name", active, cloned, created_at, updated_at) VALUES
+	('0289e7e0-fb15-446f-9e54-a28148e1c943', 'Bárbara e Raimundo Telas Ltda', true, false, now(), now()),
+	('352fd491-7cf4-4cab-852a-7adf28de3804', 'Juan e Maya Esportes Ltda', true, false, now(), now()),
+	('d161c75f-6c7c-407a-b2bd-99dd96162fd6', 'Arthur e Murilo Pães e Doces Ltda', true, false, now(), now()),
+	('ca278ff3-7533-42d0-8456-56f1fd58acc4', 'Martin e Sebastiana Alimentos ME', true, false, now(), now()),
+	('f394ed16-ce91-404b-baac-92c80dd1b3b6', 'Ana e Luciana Doces & Salgados ME', true, false, now(), now());
 
 
 ------------------------------ INSERT TARGET INFORMATION

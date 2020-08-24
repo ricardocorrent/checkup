@@ -12,6 +12,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "inspection", schema = "checkup")
@@ -55,10 +57,15 @@ public class Inspection extends PrototypePattern {
     public Inspection(final Inspection inspection) {
         super(inspection);
         if (inspection != null) {
-            this.title = inspection.getTitle();
-            this.description = inspection.getDescription();
-            this.target = inspection.getTarget();
-            this.information = inspection.getInformation();
+            this.title = inspection.title;
+            this.description = inspection.description;
+            this.draft = inspection.draft;
+            this.syncQuantities = inspection.syncQuantities;;
+            this.note = inspection.note;
+            this.allowedToSync = inspection.allowedToSync;
+            this.information = inspection.information.stream().map(inspectionInformation -> (InspectionInformation) inspectionInformation.clone()).collect(Collectors.toList());
+            this.user = inspection.user;
+            this.target = (Target) inspection.target.clone();
         }
     }
 

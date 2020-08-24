@@ -6,19 +6,26 @@ import com.checkup.server.model.BaseModel;
 import com.checkup.server.model.IdVO;
 import com.checkup.server.model.PrototypePattern;
 import com.checkup.server.validation.exception.RegisterNotFoundException;
+import com.checkup.target.Target;
+import com.checkup.target.TargetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class InspectionService extends SimpleAbstractService<Inspection, InspectionVO> {
 
     private final InspectionRepository inspectionRepository;
+    private final TargetRepository targetRepository;
 
     private InspectionValidator inspectionValidator;
 
     @Autowired
-    public InspectionService(final InspectionRepository inspectionRepository) {
+    public InspectionService(final InspectionRepository inspectionRepository,
+                             final TargetRepository targetRepository) {
         this.inspectionRepository = inspectionRepository;
+        this.targetRepository = targetRepository;
         inspectionValidator = new InspectionValidator();
     }
 
@@ -41,7 +48,10 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
 
     private InspectionFinalizeVO handleCloseInspection(final Inspection inspection) {
         final Inspection clone = (Inspection) inspection.clone();
-        System.out.println(clone.getTitle());
-        return null;
+        final Target target = targetRepository.save((Target) inspection.getTarget().clone());
+
+        clone.setTarget(target);
+        inspectionRepository.save(clone);
+        return new InspectionFinalizeVO(clone.getId());
     }
 }

@@ -28,7 +28,7 @@ public class InspectionController extends SimpleAbstractController<Inspection, I
         return "title";
     }
 
-    @PutMapping(path = "/{id}/close")
+    @PostMapping(path = "/{id}/close")
     public ResponseEntity<?> closeInspection(@PathVariable final UUID id) {
         return ResponseEntity
                 .status(HttpStatus.OK)

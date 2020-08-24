@@ -1,15 +1,20 @@
 package com.checkup.server.model;
 
 import javax.persistence.MappedSuperclass;
-import java.util.Objects;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @MappedSuperclass
-public abstract class PrototypePattern extends PhysicalBaseEntity{
+public abstract class PrototypePattern extends PhysicalBaseEntity {
 
     public PrototypePattern() {
     }
 
-    public PrototypePattern(PrototypePattern target) {
+    public PrototypePattern(final PrototypePattern target) {
+        if (target != null) {
+            this.setCreatedAt(OffsetDateTime.now());
+            this.setUpdatedAt(OffsetDateTime.now());
+        }
     }
 
     public abstract PrototypePattern clone();
