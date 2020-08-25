@@ -2,7 +2,7 @@ package com.checkup.item;
 
 import com.checkup.item.information.ItemInformation;
 import com.checkup.rule.Rule;
-import com.checkup.server.model.PhysicalBaseEntity;
+import com.checkup.server.model.PrototypePhysicalBaseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,10 +10,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "item", schema = "checkup")
-public class Item extends PhysicalBaseEntity {
+public class Item extends PrototypePhysicalBaseEntity {
 
     @NotNull
     @NotEmpty
@@ -33,6 +34,9 @@ public class Item extends PhysicalBaseEntity {
     @NotNull
     private Boolean active = Boolean.TRUE;
 
+    @Column(updatable = false)
+    private Boolean cloned = Boolean.FALSE;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "item_id", nullable = false)
     private List<ItemInformation> information;
@@ -41,6 +45,30 @@ public class Item extends PhysicalBaseEntity {
     @ManyToOne
     @JoinColumn(name = "rule_id", nullable = false)
     private Rule rule;
+
+    public Item() {
+    }
+
+    public Item(final Item item) {
+        super(item);
+        if (item != null) {
+            this.title = item.title;
+            this.description = item.description;
+            this.positionIndex = item.positionIndex;
+            this.active = item.active;
+            this.information =
+                    item.information
+                            .stream()
+                            .map(ItemInformation::clone)
+                            .collect(Collectors.toList());
+            this.rule = item.rule;
+        }
+    }
+
+    @Override
+    public Item clone() {
+        return new Item(this);
+    }
 
     public String getTitle() {
         return title;
@@ -72,6 +100,14 @@ public class Item extends PhysicalBaseEntity {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean getCloned() {
+        return cloned;
+    }
+
+    public void setCloned(final Boolean cloned) {
+        this.cloned = cloned;
     }
 
     public List<ItemInformation> getInformation() {

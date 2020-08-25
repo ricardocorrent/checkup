@@ -2,6 +2,7 @@ package com.checkup.target;
 
 import com.checkup.server.model.BaseVO;
 import com.checkup.target.information.TargetInformationVO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.validation.constraints.NotBlank;
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@JsonPropertyOrder({"id", "name", "active", "cloned", "information", "createdAt", "updatedAt"})
+@JsonPropertyOrder({"id", "name", "active", "information", "createdAt", "updatedAt"})
 public class TargetVO extends BaseVO {
 
     @NotNull
@@ -20,8 +21,6 @@ public class TargetVO extends BaseVO {
     private String name;
 
     private Boolean active;
-
-    private Boolean cloned;
 
     private List<TargetInformationVO> information;
 
@@ -41,13 +40,6 @@ public class TargetVO extends BaseVO {
         this.active = active;
     }
 
-    public Boolean getCloned() {
-        return cloned;
-    }
-
-    public void setCloned(final Boolean cloned) {
-        this.cloned = cloned;
-    }
 
     public List<TargetInformationVO> getInformation() {
         return information;

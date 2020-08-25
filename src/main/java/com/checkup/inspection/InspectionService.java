@@ -1,31 +1,41 @@
 package com.checkup.inspection;
 
 import com.checkup.inspection.vo.InspectionFinalizeVO;
+import com.checkup.item.ItemRepository;
+import com.checkup.rule.RuleRepository;
 import com.checkup.server.SimpleAbstractService;
-import com.checkup.server.model.BaseModel;
 import com.checkup.server.model.IdVO;
-import com.checkup.server.model.PrototypePattern;
 import com.checkup.server.validation.exception.RegisterNotFoundException;
-import com.checkup.target.Target;
 import com.checkup.target.TargetRepository;
+import com.checkup.topic.Topic;
+import com.checkup.topic.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class InspectionService extends SimpleAbstractService<Inspection, InspectionVO> {
 
     private final InspectionRepository inspectionRepository;
     private final TargetRepository targetRepository;
+    private final TopicRepository topicRepository;
+    private final ItemRepository itemRepository;
+    private final RuleRepository ruleRepository;
 
     private InspectionValidator inspectionValidator;
 
     @Autowired
     public InspectionService(final InspectionRepository inspectionRepository,
-                             final TargetRepository targetRepository) {
+                             final TargetRepository targetRepository,
+                             final TopicRepository topicRepository,
+                             final ItemRepository itemRepository,
+                             final RuleRepository ruleRepository) {
         this.inspectionRepository = inspectionRepository;
         this.targetRepository = targetRepository;
+        this.topicRepository = topicRepository;
+        this.itemRepository = itemRepository;
+        this.ruleRepository = ruleRepository;
         inspectionValidator = new InspectionValidator();
     }
 
@@ -42,15 +52,13 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
     public InspectionFinalizeVO closeInspection(final IdVO idVO) {
         final Inspection inspection = inspectionRepository.findById(idVO.getId()).orElseThrow(RegisterNotFoundException::new);
         inspectionValidator.validateIfInspectionCanBeClosed(inspection);
-        inspection.setDraft(Boolean.FALSE);
         return handleCloseInspection(inspection);
     }
 
     private InspectionFinalizeVO handleCloseInspection(final Inspection inspection) {
-        final Inspection clone = (Inspection) inspection.clone();
-        final Target target = targetRepository.save((Target) inspection.getTarget().clone());
-
-        clone.setTarget(target);
+        final Inspection clone = inspection.clone();
+        topicRepository.findByInspectionId(inspection.getId()).stream().map(Topic::clone).collect(Collectors.toList());
+        targetRepository.save(clone.getTarget());
         inspectionRepository.save(clone);
         return new InspectionFinalizeVO(clone.getId());
     }

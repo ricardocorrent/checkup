@@ -1,8 +1,7 @@
 package com.checkup.inspection;
 
 import com.checkup.inspection.information.InspectionInformation;
-import com.checkup.server.model.PhysicalBaseEntity;
-import com.checkup.server.model.PrototypePattern;
+import com.checkup.server.model.PrototypePhysicalBaseEntity;
 import com.checkup.target.Target;
 import com.checkup.user.User;
 
@@ -12,12 +11,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "inspection", schema = "checkup")
-public class Inspection extends PrototypePattern {
+public class Inspection extends PrototypePhysicalBaseEntity {
 
     @NotNull
     @NotEmpty
@@ -38,6 +36,9 @@ public class Inspection extends PrototypePattern {
 
     private Boolean allowedToSync = Boolean.FALSE;
 
+    @Column(updatable = false)
+    private Boolean cloned = Boolean.FALSE;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "inspection_id", nullable = false)
     private List<InspectionInformation> information;
@@ -52,20 +53,26 @@ public class Inspection extends PrototypePattern {
     @JoinColumn(name = "target_id")
     private Target target;
 
-    public Inspection(){}
+    public Inspection() {
+    }
 
     public Inspection(final Inspection inspection) {
         super(inspection);
         if (inspection != null) {
             this.title = inspection.title;
             this.description = inspection.description;
-            this.draft = inspection.draft;
-            this.syncQuantities = inspection.syncQuantities;;
+            this.draft = Boolean.FALSE;
+            this.syncQuantities = inspection.syncQuantities;
             this.note = inspection.note;
             this.allowedToSync = inspection.allowedToSync;
-            this.information = inspection.information.stream().map(inspectionInformation -> (InspectionInformation) inspectionInformation.clone()).collect(Collectors.toList());
+            this.cloned = Boolean.TRUE;
+            this.information =
+                    inspection.information
+                            .stream()
+                            .map(InspectionInformation::clone)
+                            .collect(Collectors.toList());
             this.user = inspection.user;
-            this.target = (Target) inspection.target.clone();
+            this.target = inspection.target.clone();
         }
     }
 
@@ -117,6 +124,14 @@ public class Inspection extends PrototypePattern {
         this.allowedToSync = allowedToSync;
     }
 
+    public Boolean getCloned() {
+        return cloned;
+    }
+
+    public void setCloned(final Boolean cloned) {
+        this.cloned = cloned;
+    }
+
     public List<InspectionInformation> getInformation() {
         return information;
     }
@@ -142,7 +157,7 @@ public class Inspection extends PrototypePattern {
     }
 
     @Override
-    public PrototypePattern clone() {
+    public Inspection clone() {
         return new Inspection(this);
     }
 }

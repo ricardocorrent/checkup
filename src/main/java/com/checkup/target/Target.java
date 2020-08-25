@@ -1,9 +1,7 @@
 package com.checkup.target;
 
-import com.checkup.server.model.PhysicalBaseEntity;
-import com.checkup.server.model.PrototypePattern;
+import com.checkup.server.model.PrototypePhysicalBaseEntity;
 import com.checkup.target.information.TargetInformation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "target", schema = "checkup")
-public class Target extends PrototypePattern {
+public class Target extends PrototypePhysicalBaseEntity {
 
     @NotNull
     @NotEmpty
@@ -26,6 +24,7 @@ public class Target extends PrototypePattern {
     @NotNull
     private Boolean active = Boolean.TRUE;
 
+    @Column(updatable = false)
     private Boolean cloned = Boolean.FALSE;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -40,12 +39,17 @@ public class Target extends PrototypePattern {
         if (target != null) {
             this.name = target.name;
             this.active = target.active;
-            this.information = target.information.stream().map(targetInformation -> (TargetInformation) targetInformation.clone()).collect(Collectors.toList());
+            this.cloned = Boolean.TRUE;
+            this.information =
+                    target.information
+                            .stream()
+                            .map(TargetInformation::clone)
+                            .collect(Collectors.toList());
         }
     }
 
     @Override
-    public PrototypePattern clone() {
+    public Target clone() {
         return new Target(this);
     }
 

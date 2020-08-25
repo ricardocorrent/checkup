@@ -1,6 +1,5 @@
 package com.checkup.target.information;
 
-import com.checkup.server.model.BaseInformation;
 import com.checkup.server.model.PrototypeInformationPattern;
 
 import javax.persistence.Entity;
@@ -13,12 +12,12 @@ public class TargetInformation extends PrototypeInformationPattern {
     public TargetInformation() {
     }
 
-    public TargetInformation(final PrototypeInformationPattern target) {
-        super(target);
+    public TargetInformation(final TargetInformation targetInformation) {
+        super(targetInformation);
     }
 
     @Override
-    public PrototypeInformationPattern clone() {
+    public TargetInformation clone() {
         return new TargetInformation(this);
     }
 }

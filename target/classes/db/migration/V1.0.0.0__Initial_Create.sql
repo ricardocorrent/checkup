@@ -32,6 +32,7 @@ CREATE TABLE target (
   	id 			UUID NOT NULL,
   	name 		VARCHAR(255) NOT NULL,
   	active		BOOLEAN NOT NULL DEFAULT TRUE,
+  	cloned      BOOLEAN NOT NULL DEFAULT FALSE,
   	created_at 	TIMESTAMPTZ NOT NULL,
 	updated_at 	TIMESTAMPTZ NOT NULL,
 	PRIMARY KEY (id)
@@ -43,6 +44,7 @@ CREATE TABLE rule (
   	title 		VARCHAR(100) NOT NULL,
   	description	VARCHAR(4000) NOT NULL,
   	active		BOOLEAN NOT NULL DEFAULT TRUE,
+    cloned      BOOLEAN NOT NULL DEFAULT FALSE,
   	created_at 	TIMESTAMPTZ NOT NULL,
 	updated_at 	TIMESTAMPTZ NOT NULL,
 	PRIMARY KEY (id)
@@ -56,6 +58,7 @@ CREATE TABLE item (
   	description 	VARCHAR(4000) NOT NULL,
   	position_index	INTEGER NOT NULL,
   	active			BOOLEAN NOT NULL DEFAULT TRUE,
+    cloned          BOOLEAN NOT NULL DEFAULT FALSE,
   	created_at 		TIMESTAMPTZ NOT NULL,
 	updated_at 		TIMESTAMPTZ NOT NULL,
 	PRIMARY KEY (id)
@@ -69,6 +72,7 @@ CREATE TABLE inspection (
   title             VARCHAR(100) NOT NULL,
   description       VARCHAR(255),
   draft             BOOLEAN NOT NULL DEFAULT TRUE,
+  cloned            BOOLEAN NOT NULL DEFAULT FALSE,
   sync_quantities   INTEGER,
   note              VARCHAR(4000),
   allowed_to_sync   BOOLEAN DEFAULT FALSE,
@@ -83,6 +87,7 @@ CREATE TABLE topic (
   inspection_id     UUID NOT NULL REFERENCES inspection (id),
   item_id           UUID NOT NULL REFERENCES item (id),
   print_in_report   BOOLEAN NOT NULL DEFAULT TRUE,
+  cloned            BOOLEAN NOT NULL DEFAULT FALSE,
   position_index    INTEGER NOT NULL,
   note              VARCHAR(4000) NULL,
   created_at        TIMESTAMPTZ NOT NULL,

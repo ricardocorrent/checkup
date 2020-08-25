@@ -1,6 +1,5 @@
 package com.checkup.inspection.information;
 
-import com.checkup.server.model.BaseInformation;
 import com.checkup.server.model.PrototypeInformationPattern;
 
 import javax.persistence.Entity;
@@ -13,12 +12,12 @@ public class InspectionInformation extends PrototypeInformationPattern {
     public InspectionInformation() {
     }
 
-    public InspectionInformation(final PrototypeInformationPattern target) {
+    public InspectionInformation(final InspectionInformation target) {
         super(target);
     }
 
     @Override
-    public PrototypeInformationPattern clone() {
+    public InspectionInformation clone() {
         return new InspectionInformation(this);
     }
 }
