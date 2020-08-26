@@ -38,7 +38,6 @@ public class Topic extends PrototypePhysicalBaseEntity {
 
     public Topic(final Topic topic) {
         super(topic);
-        this.inspection = topic.inspection;
         this.item = topic.item.clone();
         this.printInReport = topic.printInReport;
         this.cloned = Boolean.TRUE;

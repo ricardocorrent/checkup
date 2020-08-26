@@ -56,6 +56,7 @@ public class Item extends PrototypePhysicalBaseEntity {
             this.description = item.description;
             this.positionIndex = item.positionIndex;
             this.active = item.active;
+            this.cloned = Boolean.TRUE;
             this.information =
                     item.information
                             .stream()
