@@ -1,5 +1,7 @@
 package com.checkup.user;
 
+import com.checkup.server.adapter.DozerAdapter;
+import com.checkup.user.information.UserInformationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,13 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.update(userVO));
+    }
+
+    @GetMapping(path = "/{id}/information")
+    public ResponseEntity<?> getAllInformation(@PathVariable final UUID id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(DozerAdapter.parseListObjects(userService.findById(id).getInformation(), UserInformationVO.class));
     }
 
     @GetMapping(path = "/all", produces = {"application/json"})

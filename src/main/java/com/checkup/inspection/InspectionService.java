@@ -1,6 +1,7 @@
 package com.checkup.inspection;
 
-import com.checkup.inspection.vo.InspectionFinalizeVO;
+import com.checkup.inspection.information.InspectionInformation;
+import com.checkup.inspection.vo.InspectionCloseVO;
 import com.checkup.item.Item;
 import com.checkup.item.ItemRepository;
 import com.checkup.rule.Rule;
@@ -52,13 +53,13 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
         return Inspection.class;
     }
 
-    public InspectionFinalizeVO closeInspection(final IdVO idVO) {
+    public InspectionCloseVO closeInspection(final IdVO idVO) {
         final Inspection inspection = inspectionRepository.findById(idVO.getId()).orElseThrow(RegisterNotFoundException::new);
         inspectionValidator.validateIfInspectionCanBeClosed(inspection);
         return handleCloseInspection(inspection);
     }
 
-    private InspectionFinalizeVO handleCloseInspection(final Inspection inspection) {
+    private InspectionCloseVO handleCloseInspection(final Inspection inspection) {
         final Inspection clone = inspection.clone();
         targetRepository.save(clone.getTarget());
         inspectionRepository.save(clone);
@@ -80,6 +81,15 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
         });
         topicRepository.saveAll(topicList);
 
-        return new InspectionFinalizeVO(clone.getId());
+        return new InspectionCloseVO(clone.getId());
+    }
+
+    public List<Inspection> getAllInspections() {
+        return inspectionRepository.findAll();
+    }
+
+    public List<InspectionInformation> getInspectionInformation(final UUID inspectionId) {
+        return Optional.ofNullable(inspectionRepository.findById(inspectionId).get().getInformation())
+                .orElseThrow(RegisterNotFoundException::new);
     }
 }

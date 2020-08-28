@@ -1,6 +1,9 @@
 package com.checkup.inspection;
 
+import com.checkup.inspection.information.InspectionInformationVO;
+import com.checkup.inspection.vo.InspectionResponseVO;
 import com.checkup.server.SimpleAbstractController;
+import com.checkup.server.adapter.DozerAdapter;
 import com.checkup.server.model.IdVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,4 +35,19 @@ public class InspectionController extends SimpleAbstractController<Inspection, I
                 .status(HttpStatus.CREATED)
                 .body(inspectionService.closeInspection(new IdVO(id)));
     }
+
+    @GetMapping(path = "/inspections")
+    public ResponseEntity<?> getAllInspections() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(DozerAdapter.parseListObjects(inspectionService.getAllInspections(), InspectionResponseVO.class));
+    }
+
+    @GetMapping(path = "/{id}/information")
+    public ResponseEntity<?> getInformation(@PathVariable final UUID id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(DozerAdapter.parseListObjects(inspectionService.getInspectionInformation(id), InspectionInformationVO.class));
+    }
+
 }
