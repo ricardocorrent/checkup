@@ -1,13 +1,16 @@
 package com.checkup.topic;
 
+import com.checkup.file.File;
 import com.checkup.inspection.Inspection;
 import com.checkup.item.Item;
 import com.checkup.server.model.PhysicalBaseEntity;
 import com.checkup.server.model.PrototypePhysicalBaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "topic", schema = "checkup")
@@ -32,6 +35,10 @@ public class Topic extends PrototypePhysicalBaseEntity {
 
     @Size(max = 4000)
     private String note;
+
+    @JsonIgnore
+    @OneToMany
+    private List<File> files;
 
     public Topic() {
     }
@@ -96,5 +103,13 @@ public class Topic extends PrototypePhysicalBaseEntity {
 
     public void setNote(final String note) {
         this.note = note;
+    }
+
+    public List<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(final List<File> files) {
+        this.files = files;
     }
 }

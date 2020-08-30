@@ -1,12 +1,16 @@
 package com.checkup.inspection;
 
+import com.checkup.file.File;
+import com.checkup.file.FileRepository;
 import com.checkup.inspection.information.InspectionInformation;
 import com.checkup.inspection.vo.InspectionCloseVO;
+import com.checkup.inspection.vo.InspectionCompleteVO;
 import com.checkup.item.Item;
 import com.checkup.item.ItemRepository;
 import com.checkup.rule.Rule;
 import com.checkup.rule.RuleRepository;
 import com.checkup.server.SimpleAbstractService;
+import com.checkup.server.adapter.DozerAdapter;
 import com.checkup.server.model.IdVO;
 import com.checkup.server.validation.exception.RegisterNotFoundException;
 import com.checkup.target.TargetRepository;
@@ -26,6 +30,7 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
     private final TopicRepository topicRepository;
     private final ItemRepository itemRepository;
     private final RuleRepository ruleRepository;
+    private final FileRepository fileRepository;
 
     private InspectionValidator inspectionValidator;
 
@@ -34,12 +39,14 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
                              final TargetRepository targetRepository,
                              final TopicRepository topicRepository,
                              final ItemRepository itemRepository,
-                             final RuleRepository ruleRepository) {
+                             final RuleRepository ruleRepository,
+                             final FileRepository fileRepository) {
         this.inspectionRepository = inspectionRepository;
         this.targetRepository = targetRepository;
         this.topicRepository = topicRepository;
         this.itemRepository = itemRepository;
         this.ruleRepository = ruleRepository;
+        this.fileRepository = fileRepository;
         inspectionValidator = new InspectionValidator();
     }
 
@@ -91,5 +98,20 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
     public List<InspectionInformation> getInspectionInformation(final UUID inspectionId) {
         return Optional.ofNullable(inspectionRepository.findById(inspectionId).get().getInformation())
                 .orElseThrow(RegisterNotFoundException::new);
+    }
+
+    public InspectionCompleteVO getCompletedInspection(final UUID inspectionId) {
+        final Optional<Inspection> inspection = inspectionRepository.findById(inspectionId);
+        final List<Topic> topics = topicRepository.findByInspectionId(inspectionId);
+        final List<File> files = fileRepository.findAll();
+        topics.forEach(topic -> {
+            files.forEach(file -> {
+                if (topic.getId().equals(file.getTopic().getId())) {
+                    topic.getFiles().add(file);
+                }
+            });
+        });
+        inspection.get().setTopics(topics);
+        return DozerAdapter.parseObject(inspection.get(), InspectionCompleteVO.class);
     }
 }

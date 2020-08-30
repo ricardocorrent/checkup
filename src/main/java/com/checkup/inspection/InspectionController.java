@@ -1,6 +1,7 @@
 package com.checkup.inspection;
 
 import com.checkup.inspection.information.InspectionInformationVO;
+import com.checkup.inspection.vo.InspectionCompleteVO;
 import com.checkup.inspection.vo.InspectionResponseVO;
 import com.checkup.server.SimpleAbstractController;
 import com.checkup.server.adapter.DozerAdapter;
@@ -50,11 +51,11 @@ public class InspectionController extends SimpleAbstractController<Inspection, I
                 .body(DozerAdapter.parseListObjects(inspectionService.getInspectionInformation(id), InspectionInformationVO.class));
     }
 
-    @GetMapping(path = "/{id}complete")
+    @GetMapping(path = "/{id}/complete")
     public ResponseEntity<?> getCompleteInspection(@PathVariable final UUID id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(DozerAdapter.parseListObjects(inspectionService.getInspectionInformation(id), InspectionInformationVO.class));
+                .body(inspectionService.getCompletedInspection(id));
     }
 
 

@@ -3,7 +3,9 @@ package com.checkup.inspection;
 import com.checkup.inspection.information.InspectionInformation;
 import com.checkup.server.model.PrototypePhysicalBaseEntity;
 import com.checkup.target.Target;
+import com.checkup.topic.Topic;
 import com.checkup.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -52,6 +54,10 @@ public class Inspection extends PrototypePhysicalBaseEntity {
     @ManyToOne
     @JoinColumn(name = "target_id")
     private Target target;
+
+    @JsonIgnore
+    @OneToMany
+    private List<Topic> topics;
 
     public Inspection() {
     }
@@ -154,6 +160,14 @@ public class Inspection extends PrototypePhysicalBaseEntity {
 
     public void setTarget(final Target target) {
         this.target = target;
+    }
+
+    public List<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(final List<Topic> topics) {
+        this.topics = topics;
     }
 
     @Override

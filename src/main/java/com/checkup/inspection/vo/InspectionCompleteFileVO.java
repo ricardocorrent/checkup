@@ -1,4 +1,4 @@
-package com.checkup.file.vo;
+package com.checkup.inspection.vo;
 
 import com.checkup.attachment.vo.AttachmentVO;
 import com.checkup.server.model.BaseVO;
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @JsonPropertyOrder({"id", "positionIndex", "active", "note", "attachment", "createdAt", "updatedAt"})
-public class FileVO extends BaseVO {
+public class InspectionCompleteFileVO extends BaseVO {
 
     @NotNull
     private Integer positionIndex;
@@ -20,8 +20,6 @@ public class FileVO extends BaseVO {
     private String note;
 
     private AttachmentVO attachment;
-
-    private FileTopicVO topic;
 
     public Integer getPositionIndex() {
         return positionIndex;
@@ -53,13 +51,5 @@ public class FileVO extends BaseVO {
 
     public void setAttachment(final AttachmentVO attachment) {
         this.attachment = attachment;
-    }
-
-    public FileTopicVO getTopic() {
-        return topic;
-    }
-
-    public void setTopic(final FileTopicVO topic) {
-        this.topic = topic;
     }
 }
