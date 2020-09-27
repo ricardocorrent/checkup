@@ -1,6 +1,6 @@
 package com.checkup.target;
 
-import com.checkup.server.model.PhysicalBaseEntity;
+import com.checkup.server.model.PrototypePhysicalBaseEntity;
 import com.checkup.target.information.TargetInformation;
 
 import javax.persistence.*;
@@ -9,10 +9,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "target", schema = "checkup")
-public class Target extends PhysicalBaseEntity {
+public class Target extends PrototypePhysicalBaseEntity {
 
     @NotNull
     @NotEmpty
@@ -23,9 +24,34 @@ public class Target extends PhysicalBaseEntity {
     @NotNull
     private Boolean active = Boolean.TRUE;
 
+    @Column(updatable = false)
+    private Boolean cloned = Boolean.FALSE;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "target_id", nullable = false)
     private List<TargetInformation> information;
+
+    public Target() {
+    }
+
+    public Target(final Target target) {
+        super(target);
+        if (target != null) {
+            this.name = target.name;
+            this.active = target.active;
+            this.cloned = Boolean.TRUE;
+            this.information =
+                    target.information
+                            .stream()
+                            .map(TargetInformation::clone)
+                            .collect(Collectors.toList());
+        }
+    }
+
+    @Override
+    public Target clone() {
+        return new Target(this);
+    }
 
     public String getName() {
         return name;
@@ -41,6 +67,14 @@ public class Target extends PhysicalBaseEntity {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean getCloned() {
+        return cloned;
+    }
+
+    public void setCloned(final Boolean cloned) {
+        this.cloned = cloned;
     }
 
     public List<TargetInformation> getInformation() {

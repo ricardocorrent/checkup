@@ -1,10 +1,11 @@
 package com.checkup.inspection;
 
 import com.checkup.inspection.information.InspectionInformation;
-import com.checkup.server.model.PhysicalBaseEntity;
-import com.checkup.server.model.PrototypePattern;
+import com.checkup.server.model.PrototypePhysicalBaseEntity;
 import com.checkup.target.Target;
+import com.checkup.topic.Topic;
 import com.checkup.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,10 +13,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "inspection", schema = "checkup")
-public class Inspection extends PrototypePattern {
+public class Inspection extends PrototypePhysicalBaseEntity {
 
     @NotNull
     @NotEmpty
@@ -36,6 +38,9 @@ public class Inspection extends PrototypePattern {
 
     private Boolean allowedToSync = Boolean.FALSE;
 
+    @Column(updatable = false)
+    private Boolean cloned = Boolean.FALSE;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "inspection_id", nullable = false)
     private List<InspectionInformation> information;
@@ -50,15 +55,30 @@ public class Inspection extends PrototypePattern {
     @JoinColumn(name = "target_id")
     private Target target;
 
-    public Inspection(){}
+    @JsonIgnore
+    @OneToMany
+    private List<Topic> topics;
+
+    public Inspection() {
+    }
 
     public Inspection(final Inspection inspection) {
         super(inspection);
         if (inspection != null) {
-            this.title = inspection.getTitle();
-            this.description = inspection.getDescription();
-            this.target = inspection.getTarget();
-            this.information = inspection.getInformation();
+            this.title = inspection.title;
+            this.description = inspection.description;
+            this.draft = Boolean.FALSE;
+            this.syncQuantities = inspection.syncQuantities;
+            this.note = inspection.note;
+            this.allowedToSync = inspection.allowedToSync;
+            this.cloned = Boolean.TRUE;
+            this.information =
+                    inspection.information
+                            .stream()
+                            .map(InspectionInformation::clone)
+                            .collect(Collectors.toList());
+            this.user = inspection.user;
+            this.target = inspection.target.clone();
         }
     }
 
@@ -110,6 +130,14 @@ public class Inspection extends PrototypePattern {
         this.allowedToSync = allowedToSync;
     }
 
+    public Boolean getCloned() {
+        return cloned;
+    }
+
+    public void setCloned(final Boolean cloned) {
+        this.cloned = cloned;
+    }
+
     public List<InspectionInformation> getInformation() {
         return information;
     }
@@ -134,8 +162,16 @@ public class Inspection extends PrototypePattern {
         this.target = target;
     }
 
+    public List<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(final List<Topic> topics) {
+        this.topics = topics;
+    }
+
     @Override
-    public PrototypePattern clone() {
+    public Inspection clone() {
         return new Inspection(this);
     }
 }

@@ -1,16 +1,32 @@
-package com.checkup.image;
+package com.checkup.attachment;
 
-public class UploadFileResponse {
+import java.util.UUID;
+
+public class AttachmentUploadResponse {
+    private UUID id;
     private String fileName;
     private String fileDownloadUri;
     private String fileType;
     private long size;
 
-    public UploadFileResponse(String fileName, String fileDownloadUri, String fileType, long size) {
+    public AttachmentUploadResponse(final UUID id,
+                                    final String fileName,
+                                    final String fileDownloadUri,
+                                    final String fileType,
+                                    final long size) {
+        this.id = id;
         this.fileName = fileName;
         this.fileDownloadUri = fileDownloadUri;
         this.fileType = fileType;
         this.size = size;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(final UUID id) {
+        this.id = id;
     }
 
     public String getFileName() {

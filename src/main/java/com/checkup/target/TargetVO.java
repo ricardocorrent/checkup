@@ -2,6 +2,7 @@ package com.checkup.target;
 
 import com.checkup.server.model.BaseVO;
 import com.checkup.target.information.TargetInformationVO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.validation.constraints.NotBlank;
@@ -38,6 +39,7 @@ public class TargetVO extends BaseVO {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
 
     public List<TargetInformationVO> getInformation() {
         return information;
