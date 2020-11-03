@@ -15,13 +15,8 @@ import java.util.stream.Collectors;
 @Table(name = "target", schema = "checkup")
 public class Target extends PrototypePhysicalBaseEntity {
 
-    @NotNull
-    @NotEmpty
-    @NotBlank
-    @Size(max = 255)
     private String name;
 
-    @NotNull
     private Boolean active = Boolean.TRUE;
 
     @Column(updatable = false)

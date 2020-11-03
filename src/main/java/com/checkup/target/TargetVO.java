@@ -20,6 +20,7 @@ public class TargetVO extends BaseVO {
     @Size(max = 255)
     private String name;
 
+    @NotNull
     private Boolean active;
 
     private List<TargetInformationVO> information;
