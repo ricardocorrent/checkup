@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
 
+/**
+ * VO that represent ITEM
+ */
 @JsonPropertyOrder({"id", "title", "description", "positionIndex", "active", "information", "createdAt", "updatedAt"})
 public class TopicItemVO extends BaseVO {
 

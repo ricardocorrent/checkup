@@ -1,7 +1,7 @@
 package com.checkup.user;
 
 import com.checkup.server.permission.Permission;
-import com.checkup.userinformation.UserInformation;
+import com.checkup.user.information.UserInformation;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -55,7 +55,7 @@ public class User implements UserDetails, Serializable {
     private List<Permission> permissions;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", nullable = false)
     private List<UserInformation> information;
 
     private OffsetDateTime createdAt;

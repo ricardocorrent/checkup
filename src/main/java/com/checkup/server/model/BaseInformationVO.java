@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @MappedSuperclass
 public abstract class BaseInformationVO extends BaseVO {
@@ -29,6 +30,21 @@ public abstract class BaseInformationVO extends BaseVO {
 
     @NotNull
     private Boolean active = Boolean.TRUE;
+
+    public BaseInformationVO() {
+    }
+
+    public BaseInformationVO(final UUID id,
+                             final String title,
+                             final String description,
+                             final Integer positionIndex,
+                             final Boolean active) {
+        setId(id);
+        this.title = title;
+        this.description = description;
+        this.positionIndex = positionIndex;
+        this.active = active;
+    }
 
     public String getTitle() {
         return title;
