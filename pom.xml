@@ -122,6 +122,7 @@
     </dependencies>
 
     <build>
+        <finalName>checkup</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
