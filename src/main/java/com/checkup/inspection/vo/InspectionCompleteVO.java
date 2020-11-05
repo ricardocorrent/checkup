@@ -2,7 +2,7 @@ package com.checkup.inspection.vo;
 
 import com.checkup.inspection.information.InspectionInformationVO;
 import com.checkup.server.model.BaseVO;
-import com.checkup.target.TargetVO;
+import com.checkup.target.TargetDTO;
 import com.checkup.user.UserVO;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -21,7 +21,7 @@ public class InspectionCompleteVO extends BaseVO {
 
     private Boolean allowedToSync;
 
-    private TargetVO target;
+    private TargetDTO target;
 
     private UserVO user;
 
@@ -77,11 +77,11 @@ public class InspectionCompleteVO extends BaseVO {
         this.allowedToSync = allowedToSync;
     }
 
-    public TargetVO getTarget() {
+    public TargetDTO getTarget() {
         return target;
     }
 
-    public void setTarget(final TargetVO target) {
+    public void setTarget(final TargetDTO target) {
         this.target = target;
     }
 

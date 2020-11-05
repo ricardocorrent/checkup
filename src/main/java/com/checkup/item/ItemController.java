@@ -27,7 +27,7 @@ public class ItemController extends SimpleAbstractController<Item, ItemVO> {
     }
 
     @Override
-    public ResponseEntity<?> listAll(int page, int limit, String direction, PagedResourcesAssembler<ItemVO> assembler) {
+    public ResponseEntity<?> listAll(int page, int size, String direction, PagedResourcesAssembler<ItemVO> assembler) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 

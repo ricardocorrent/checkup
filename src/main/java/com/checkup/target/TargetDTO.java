@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "name", "active", "information", "createdAt", "updatedAt"})
-public class TargetVO extends BaseVO {
+public class TargetDTO extends BaseVO {
 
     @NotNull
     @NotBlank

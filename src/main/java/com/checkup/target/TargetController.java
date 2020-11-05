@@ -10,7 +10,7 @@ import javax.inject.Inject;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/target")
-public class TargetController extends SimpleAbstractController<Target, TargetVO> {
+public class TargetController extends SimpleAbstractController<Target, TargetDTO> {
 
     private final TargetService targetService;
 

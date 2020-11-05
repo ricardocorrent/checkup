@@ -22,7 +22,7 @@ public class TopicController extends SimpleAbstractController<Topic, TopicVO> {
     }
 
     @Override
-    public ResponseEntity<?> listAll(int page, int limit, String direction, PagedResourcesAssembler<TopicVO> assembler) {
+    public ResponseEntity<?> listAll(int page, int size, String direction, PagedResourcesAssembler<TopicVO> assembler) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 

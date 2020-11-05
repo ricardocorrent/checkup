@@ -51,11 +51,11 @@ public abstract class SimpleAbstractController<T extends BaseModel, Z extends Ba
 
     @GetMapping(path = "/list-all")
     public ResponseEntity<?> listAll(@RequestParam(value = "page", defaultValue = "0") int page,
-                                     @RequestParam(value = "limit", defaultValue = "4") int limit,
+                                     @RequestParam(value = "size", defaultValue = "4") int size,
                                      @RequestParam(value = "direction", defaultValue = "asc") String direction,
                                      PagedResourcesAssembler<Z> assembler) {
         final Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        final Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, getListAllSortProperty()));
+        final Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, getListAllSortProperty()));
         final Page<Z> listOfEntities = simpleAbstractService.list(pageable);
 
         return ResponseEntity.ok(listOfEntities);
