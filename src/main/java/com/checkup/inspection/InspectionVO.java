@@ -2,7 +2,7 @@ package com.checkup.inspection;
 
 import com.checkup.inspection.information.InspectionInformationVO;
 import com.checkup.server.model.BaseVO;
-import com.checkup.target.TargetVO;
+import com.checkup.target.TargetDTO;
 import com.checkup.user.UserVO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -43,7 +43,7 @@ public class InspectionVO extends BaseVO {
     private UserVO user;
 
     @JsonIgnoreProperties({"createdAt", "updatedAt"})
-    private TargetVO target;
+    private TargetDTO target;
 
     public String getTitle() {
         return title;
@@ -109,11 +109,11 @@ public class InspectionVO extends BaseVO {
         this.user = user;
     }
 
-    public TargetVO getTarget() {
+    public TargetDTO getTarget() {
         return target;
     }
 
-    public void setTarget(final TargetVO target) {
+    public void setTarget(final TargetDTO target) {
         this.target = target;
     }
 }

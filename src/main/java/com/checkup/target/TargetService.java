@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 
 @Service
-public class TargetService extends SimpleAbstractService<Target, TargetVO> {
+public class TargetService extends SimpleAbstractService<Target, TargetDTO> {
 
     private final TargetRepository targetRepository;
 
@@ -16,8 +16,8 @@ public class TargetService extends SimpleAbstractService<Target, TargetVO> {
     }
 
     @Override
-    public Class<TargetVO> getClazz() {
-        return TargetVO.class;
+    public Class<TargetDTO> getClazz() {
+        return TargetDTO.class;
     }
 
     @Override
