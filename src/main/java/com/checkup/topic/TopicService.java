@@ -19,12 +19,21 @@ public class TopicService extends SimpleAbstractService<Topic, TopicVO> {
 
     private final TopicRepository topicRepository;
     private final InspectionRepository inspectionRepository;
+    private final TopicValidator topicValidator;
 
     @Inject
     public TopicService(final TopicRepository topicRepository,
                         final InspectionRepository inspectionRepository) {
         this.topicRepository = topicRepository;
         this.inspectionRepository = inspectionRepository;
+        this.topicValidator = new TopicValidator(topicRepository);
+    }
+
+    @Override
+    public TopicVO insert(final TopicVO topicVO) {
+        final Topic t = convertEntityVOToEntity(topicVO);
+        topicValidator.validate(t);
+        return convertEntityToEntityVO(topicRepository.save(t));
     }
 
     @Override

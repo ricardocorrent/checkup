@@ -51,7 +51,7 @@ public abstract class SimpleAbstractController<T extends BaseModel, Z extends Ba
 
     @GetMapping(path = "/list-all")
     public ResponseEntity<?> listAll(@RequestParam(value = "page", defaultValue = "0") int page,
-                                     @RequestParam(value = "size", defaultValue = "4") int size,
+                                     @RequestParam(value = "size", defaultValue = "100") int size,
                                      @RequestParam(value = "direction", defaultValue = "asc") String direction,
                                      PagedResourcesAssembler<Z> assembler) {
         final Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
