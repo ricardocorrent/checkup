@@ -28,7 +28,7 @@ public class AttachmentController {
         final Attachment attachment = attachmentService.storeFile(file);
 
         final String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("api/file/download/")
+                .path("api/attachment/download/")
                 .path(attachment.getId().toString())
                 .toUriString();
 
@@ -37,10 +37,9 @@ public class AttachmentController {
     }
 
     @PostMapping("/batch-upload")
-    public List<AttachmentUploadResponse> uploadMultipleFiles(@RequestParam("files") final MultipartFile[] files) {
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> uploadFile(file))
+    public List<AttachmentUploadResponse> uploadMultipleFiles(@RequestParam("file") final MultipartFile[] files) {
+        return Arrays.stream(files)
+                .map(this::uploadFile)
                 .collect(Collectors.toList());
     }
 

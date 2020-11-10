@@ -2,10 +2,14 @@ package com.checkup.file;
 
 import com.checkup.file.vo.FileVO;
 import com.checkup.server.SimpleAbstractController;
+import com.checkup.server.adapter.DozerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -23,4 +27,13 @@ public class FileController extends SimpleAbstractController<File, FileVO> {
     protected String getListAllSortProperty() {
         return "positionIndex";
     }
+
+    @PostMapping(value = "/batch-insert")
+    private ResponseEntity<?> insert(@Valid @RequestBody final List<FileVO> files) {
+        final List<File> fileList = DozerAdapter.parseListObjects(files, File.class);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(fileService.batchInsert(fileList));
+    }
+
 }
