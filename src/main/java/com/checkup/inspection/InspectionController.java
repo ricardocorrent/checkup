@@ -7,6 +7,7 @@ import com.checkup.server.SimpleAbstractController;
 import com.checkup.server.adapter.DozerAdapter;
 import com.checkup.server.model.IdVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Transient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,12 @@ public class InspectionController extends SimpleAbstractController<Inspection, I
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(inspectionService.getCompletedInspection(id));
+    }
+
+    @PutMapping(path = "/{id}/complete")
+    public ResponseEntity<?> updateCompleteInspection(@RequestBody final InspectionCompleteVO entity) {
+        return ResponseEntity.ok()
+                .body(inspectionService.updateCompleteInspection(entity));
     }
 
 
