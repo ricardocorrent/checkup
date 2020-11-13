@@ -16,9 +16,7 @@ import com.checkup.rule.information.RuleInformation;
 import com.checkup.rule.information.RuleInformationVO;
 import com.checkup.server.SimpleAbstractService;
 import com.checkup.server.adapter.DozerAdapter;
-import com.checkup.server.model.BaseVO;
 import com.checkup.server.model.IdVO;
-import com.checkup.server.model.PhysicalBaseEntity;
 import com.checkup.server.validation.exception.RegisterNotFoundException;
 import com.checkup.target.Target;
 import com.checkup.target.TargetDTO;
@@ -27,6 +25,9 @@ import com.checkup.target.information.TargetInformation;
 import com.checkup.target.information.TargetInformationVO;
 import com.checkup.topic.Topic;
 import com.checkup.topic.TopicRepository;
+import com.checkup.user.User;
+import com.checkup.user.UserRepository;
+import com.checkup.user.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
 public class InspectionService extends SimpleAbstractService<Inspection, InspectionVO> {
 
     private final InspectionRepository inspectionRepository;
+    private final UserRepository userRepository;
     private final TargetRepository targetRepository;
     private final TopicRepository topicRepository;
     private final ItemRepository itemRepository;
@@ -47,12 +49,14 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
 
     @Autowired
     public InspectionService(final InspectionRepository inspectionRepository,
+                             final UserRepository userRepository,
                              final TargetRepository targetRepository,
                              final TopicRepository topicRepository,
                              final ItemRepository itemRepository,
                              final RuleRepository ruleRepository,
                              final FileRepository fileRepository) {
         this.inspectionRepository = inspectionRepository;
+        this.userRepository = userRepository;
         this.targetRepository = targetRepository;
         this.topicRepository = topicRepository;
         this.itemRepository = itemRepository;
@@ -128,9 +132,23 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
 
     public InspectionCompleteVO updateCompleteInspection(final InspectionCompleteVO entity) {
         handleInspection(entity);
+        handleUser(entity.getUser());
         handleTarget(entity.getTarget());
         handleTopic(entity);
         return entity;
+    }
+
+    private void handleUser(final UserVO newUser) {
+        final Optional<User> userFromDb = userRepository.findById(newUser.getId());
+        userFromDb.ifPresent(user -> {
+            user.getInformation().forEach(oi -> {
+                newUser.getInformation().stream()
+                        .filter(ni -> ni.getId().equals(oi.getId()))
+                        .findFirst()
+                        .ifPresent(ni -> oi.setActive(ni.getActive()));
+            });
+        });
+        userRepository.save(userFromDb.get());
     }
 
     private void handleInspection(final InspectionCompleteVO entity) {
@@ -147,17 +165,17 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
             newInformation.stream()
                     .filter(ni -> ni.getId().equals(oi.getId()))
                     .findFirst()
-                    .ifPresentOrElse(ni -> oi.setActive(ni.getActive()), () -> oldInformation.remove(oi));
+                    .ifPresent(ni -> oi.setActive(ni.getActive()));
         });
     }
 
     private void handleTarget(final TargetDTO targetDTO) {
         final Target targetFromDb = targetRepository.findById(targetDTO.getId()).get();
-        handleInspectionTarget(targetFromDb.getInformation(), targetDTO.getInformation());
-        targetRepository.save(DozerAdapter.parseObject(targetDTO, Target.class));
+        handleTargetInformation(targetFromDb.getInformation(), targetDTO.getInformation());
+        targetRepository.save(targetFromDb);
     }
 
-    private void handleInspectionTarget(final List<TargetInformation> oldInformation, final List<TargetInformationVO> newInformation) {
+    private void handleTargetInformation(final List<TargetInformation> oldInformation, final List<TargetInformationVO> newInformation) {
         oldInformation.forEach(oi -> {
             newInformation.stream()
                     .filter(ni -> ni.getId().equals(oi.getId()))
