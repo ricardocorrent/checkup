@@ -118,14 +118,17 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
     public InspectionCompleteVO getCompletedInspection(final UUID inspectionId) {
         final Optional<Inspection> inspection = inspectionRepository.findById(inspectionId);
         final List<Topic> topics = topicRepository.findByInspectionId(inspectionId);
-        final List<File> files = fileRepository.findAll();
-        topics.forEach(topic -> {
-            files.forEach(file -> {
-                if (topic.getId().equals(file.getTopic().getId())) {
-                    topic.getFiles().add(file);
-                }
+        final Optional<List<File>> optionalFiles = fileRepository.findByInspection(inspectionId);
+        optionalFiles.ifPresent(files -> {
+            topics.forEach(topic -> {
+                files.forEach(file -> {
+                    if (topic.getId().equals(file.getTopic().getId())) {
+                        topic.getFiles().add(file);
+                    }
+                });
             });
         });
+
         inspection.get().setTopics(topics);
         return DozerAdapter.parseObject(inspection.get(), InspectionCompleteVO.class);
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -15,4 +16,8 @@ public interface FileRepository extends JpaRepository<File, UUID> {
     @Transactional
     @Query("SELECT i FROM File i WHERE i.topic.id =:fileId")
     List<File> findByTopicId(@Param("fileId") UUID fileId);
+
+    @Transactional
+    @Query("SELECT i FROM File i WHERE i.topic.inspection.id =:inspectionId")
+    Optional<List<File>> findByInspection(@Param("inspectionId") UUID inspectionId);
 }
