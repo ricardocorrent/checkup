@@ -4,6 +4,7 @@ import com.checkup.file.File;
 import com.checkup.file.FileRepository;
 import com.checkup.inspection.information.InspectionInformation;
 import com.checkup.inspection.information.InspectionInformationVO;
+import com.checkup.inspection.print.*;
 import com.checkup.inspection.vo.*;
 import com.checkup.item.Item;
 import com.checkup.item.ItemRepository;
@@ -16,6 +17,7 @@ import com.checkup.rule.information.RuleInformation;
 import com.checkup.rule.information.RuleInformationVO;
 import com.checkup.server.SimpleAbstractService;
 import com.checkup.server.adapter.DozerAdapter;
+import com.checkup.server.model.BaseInformation;
 import com.checkup.server.model.IdVO;
 import com.checkup.server.validation.exception.RegisterNotFoundException;
 import com.checkup.target.Target;
@@ -28,11 +30,14 @@ import com.checkup.topic.TopicRepository;
 import com.checkup.user.User;
 import com.checkup.user.UserRepository;
 import com.checkup.user.UserVO;
+import com.checkup.user.information.UserInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class InspectionService extends SimpleAbstractService<Inspection, InspectionVO> {
@@ -257,6 +262,113 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
                     });
         });
         fileRepository.saveAll(filesFromDb);
+    }
+
+    public InspectionPrintDTO getPrintInspection(final UUID inspectionId) {
+        final Optional<Inspection> completeInspection = inspectionRepository.findById(inspectionId);
+        if (completeInspection.isPresent()) {
+            return handlePrint(completeInspection.get());
+        }
+        throw new RegisterNotFoundException();
+    }
+
+    private InspectionPrintDTO handlePrint(final Inspection completeInspection) {
+        final InspectionPrintDTO print = new InspectionPrintDTO();
+        populateInspection(print, completeInspection);
+        populateTarget(print, completeInspection);
+        populateRule(print, completeInspection);
+        populateUser(print, completeInspection);
+        return print;
+    }
+
+    private void populateInspection(final InspectionPrintDTO print, final Inspection completeInspection) {
+        print.setId(completeInspection.getId());
+        print.setTitle(completeInspection.getTitle());
+        print.setDescription(completeInspection.getDescription());
+        print.setDraft(completeInspection.getDraft());
+        print.setNote(completeInspection.getNote());
+
+        final List<InspectionInformation> inspectionInformation =
+                completeInspection.getInformation().stream()
+                        .filter(InspectionInformation::getActive)
+                        .collect(Collectors.toList());
+
+        print.setInformation(DozerAdapter.parseListObjects(inspectionInformation, InspectionPrintInformationDTO.class));
+    }
+
+    private void populateTarget(final InspectionPrintDTO print, final Inspection completeInspection) {
+        final List<TargetInformation> targetInformation =
+                completeInspection.getTarget().getInformation().stream()
+                .filter(BaseInformation::getActive)
+                .collect(Collectors.toList());
+
+        final List<InspectionPrintTargetInformationDTO> targetInformationDTO =
+                DozerAdapter.parseListObjects(targetInformation, InspectionPrintTargetInformationDTO.class);
+
+        final InspectionPrintTargetDTO inspectionPrintTargetDTO =
+                DozerAdapter.parseObject(completeInspection.getTarget(), InspectionPrintTargetDTO.class);
+
+        inspectionPrintTargetDTO.setInformation(targetInformationDTO);
+        print.setTarget(inspectionPrintTargetDTO);
+    }
+
+    private void populateRule(final InspectionPrintDTO print, final Inspection completeInspection) {
+
+        final Map<UUID, Set<UUID>> cache = new HashMap<>();
+        final List<InspectionPrintRuleDTO> ruleDTOList = new ArrayList<>();
+
+        final List<Topic> topics =
+                topicRepository.findByInspectionId(completeInspection.getId())
+                        .stream()
+                        .filter(Topic::getPrintInReport)
+                        .collect(Collectors.toList());
+
+        topics.forEach(topic -> {
+            final UUID ruleId = topic.getItem().getRule().getId();
+            final UUID itemId = topic.getItem().getId();
+            final InspectionPrintRuleDTO inspectionPrintRuleDTO = DozerAdapter.parseObject(topic.getItem().getRule(), InspectionPrintRuleDTO.class);
+            final InspectionPrintRuleItemDTO inspectionPrintRuleItemDTO = DozerAdapter.parseObject(topic.getItem(), InspectionPrintRuleItemDTO.class);
+
+            inspectionPrintRuleItemDTO.setNote(topic.getNote());
+
+            final List<File> filesList = fileRepository.findByTopicId(topic.getId());
+            if (!CollectionUtils.isEmpty(filesList)) {
+                inspectionPrintRuleItemDTO.setFiles(DozerAdapter.parseListObjects(filesList, InspectionPrintFileDTO.class));
+            }
+
+            if (cache.containsKey(ruleId)) {
+                if (!cache.get(ruleId).contains(itemId)) {
+                    ruleDTOList.forEach(iprdto -> {
+                        if (iprdto.getId().equals(inspectionPrintRuleDTO.getId())) {
+                            iprdto.getItems().add(inspectionPrintRuleItemDTO);
+                        }
+                    });
+                    cache.get(ruleId).add(itemId);
+                }
+            } else {
+                cache.put(ruleId, Stream.of(itemId).collect(Collectors.toSet()));
+                inspectionPrintRuleDTO.setItems(Stream.of(inspectionPrintRuleItemDTO).collect(Collectors.toList()));
+                ruleDTOList.add(inspectionPrintRuleDTO);
+            }
+        });
+
+
+        print.setRules(ruleDTOList);
+    }
+
+    private void populateUser(final InspectionPrintDTO print, final Inspection completeInspection) {
+        final List<UserInformation> userInformation = completeInspection.getUser().getInformation().stream()
+                .filter(BaseInformation::getActive)
+                .collect(Collectors.toList());
+
+        final List<InspectionPrintUserInformationDTO> inspectionPrintUserInformationDTO =
+                DozerAdapter.parseListObjects(userInformation, InspectionPrintUserInformationDTO.class);
+
+        final InspectionPrintUserVO inspectionPrintUserVO =
+                DozerAdapter.parseObject(completeInspection.getUser(), InspectionPrintUserVO.class);
+
+        inspectionPrintUserVO.setInformation(inspectionPrintUserInformationDTO);
+        print.setUser(inspectionPrintUserVO);
     }
 
 }
