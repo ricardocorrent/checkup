@@ -6,9 +6,15 @@ import com.checkup.target.TargetDTO;
 import com.checkup.user.UserVO;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 @JsonPropertyOrder({"id", "title", "description", "draft", "syncQuantities", "note", "allowedToSync", "target", "user", "information", "topics", "createdAt", "updatedAt"})
 public class InspectionCompleteVO extends BaseVO {
+
+    public InspectionCompleteVO() {
+        this.topics = new ArrayList<>();
+    }
+
     private String title;
 
     private String description;

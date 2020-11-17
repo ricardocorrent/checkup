@@ -121,21 +121,28 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
     }
 
     public InspectionCompleteVO getCompletedInspection(final UUID inspectionId) {
-        final Optional<Inspection> inspection = inspectionRepository.findById(inspectionId);
-        final List<Topic> topics = topicRepository.findByInspectionId(inspectionId);
-        final Optional<List<File>> optionalFiles = fileRepository.findByInspection(inspectionId);
-        optionalFiles.ifPresent(files -> {
-            topics.forEach(topic -> {
-                files.forEach(file -> {
-                    if (topic.getId().equals(file.getTopic().getId())) {
-                        topic.getFiles().add(file);
-                    }
-                });
-            });
+        final InspectionCompleteVO complete = new InspectionCompleteVO();
+
+        final Optional<Inspection> inspectionFomDb = inspectionRepository.findById(inspectionId);
+        inspectionFomDb.ifPresent(inspection -> {
+            complete.setId(inspection.getId());
+            complete.setTitle(inspection.getTitle());
+            complete.setDescription(inspection.getDescription());
+            complete.setDraft(inspection.getDraft());
+            complete.setNote(inspection.getNote());
+            complete.setInformation(DozerAdapter.parseListObjects(inspection.getInformation(), InspectionInformationVO.class));
+            complete.setUser(DozerAdapter.parseObject(inspection.getUser(), UserVO.class));
+            complete.setTarget(DozerAdapter.parseObject(inspection.getTarget(), TargetDTO.class));
         });
 
-        inspection.get().setTopics(topics);
-        return DozerAdapter.parseObject(inspection.get(), InspectionCompleteVO.class);
+        final List<Topic> topics = topicRepository.findByInspectionId(inspectionId);
+        topics.forEach(topic -> {
+            final InspectionCompleteTopicVO topicVO = DozerAdapter.parseObject(topic, InspectionCompleteTopicVO.class);
+            topicVO.setFiles(DozerAdapter.parseListObjects(fileRepository.findByTopicId(topic.getId()), InspectionCompleteFileVO.class));
+            complete.getTopics().add(topicVO);
+        });
+
+        return complete;
     }
 
     public InspectionCompleteVO updateCompleteInspection(final InspectionCompleteVO entity) {
