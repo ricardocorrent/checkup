@@ -147,7 +147,7 @@ CREATE TABLE user_information
 CREATE TABLE target_information
 (
     id             UUID          NOT NULL,
-    target_id      UUID          NOT NULL REFERENCES target (id),
+    target_id      UUID          NOT NULL REFERENCES target (id) ON DELETE CASCADE,
     title          VARCHAR(100)  NOT NULL,
     description    VARCHAR(4000) NOT NULL,
     position_index INTEGER       NOT NULL,
@@ -161,7 +161,7 @@ CREATE TABLE target_information
 CREATE TABLE rule_information
 (
     id             UUID          NOT NULL,
-    rule_id        UUID          NOT NULL REFERENCES rule (id),
+    rule_id        UUID          NOT NULL REFERENCES rule (id) ON DELETE CASCADE,
     title          VARCHAR(100)  NOT NULL,
     description    VARCHAR(4000) NOT NULL,
     position_index INTEGER       NOT NULL,
@@ -175,7 +175,7 @@ CREATE TABLE rule_information
 CREATE TABLE item_information
 (
     id             UUID          NOT NULL,
-    item_id        UUID          NOT NULL REFERENCES item (id),
+    item_id        UUID          NOT NULL REFERENCES item (id) ON DELETE CASCADE,
     title          VARCHAR(100)  NOT NULL,
     description    VARCHAR(4000) NOT NULL,
     position_index INTEGER       NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE item_information
 CREATE TABLE inspection_information
 (
     id             UUID          NOT NULL,
-    inspection_id  UUID          NOT NULL REFERENCES inspection (id),
+    inspection_id  UUID          NOT NULL REFERENCES inspection (id) ON DELETE CASCADE,
     title          VARCHAR(100)  NOT NULL,
     description    VARCHAR(4000) NOT NULL,
     position_index INTEGER       NOT NULL,
