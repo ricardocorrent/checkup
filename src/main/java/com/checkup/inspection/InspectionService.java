@@ -340,7 +340,11 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
 
             final List<File> filesList = fileRepository.findByTopicId(topic.getId());
             if (!CollectionUtils.isEmpty(filesList)) {
-                inspectionPrintRuleItemDTO.setFiles(DozerAdapter.parseListObjects(filesList, InspectionPrintFileDTO.class));
+                final List<InspectionPrintFileDTO> filesDTO = DozerAdapter.parseListObjects(filesList, InspectionPrintFileDTO.class);
+                filesDTO.forEach(file -> {
+                    file.setLink("http://localhost:8083/api/attachment/download/" + file.getAttachment().getId());
+                });
+                inspectionPrintRuleItemDTO.setFiles(filesDTO);
             }
 
             if (cache.containsKey(ruleId)) {

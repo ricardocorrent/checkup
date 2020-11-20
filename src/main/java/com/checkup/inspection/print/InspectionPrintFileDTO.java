@@ -21,6 +21,8 @@ public class InspectionPrintFileDTO extends BaseVO {
 
     private FileTopicVO topic;
 
+    private String link;
+
     public Integer getPositionIndex() {
         return positionIndex;
     }
@@ -59,5 +61,13 @@ public class InspectionPrintFileDTO extends BaseVO {
 
     public void setTopic(final FileTopicVO topic) {
         this.topic = topic;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(final String link) {
+        this.link = link;
     }
 }
