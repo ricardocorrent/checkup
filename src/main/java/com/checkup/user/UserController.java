@@ -1,6 +1,8 @@
 package com.checkup.user;
 
+import com.checkup.server.AuthenticationFacade;
 import com.checkup.server.adapter.DozerAdapter;
+import com.checkup.user.form.UserFORM;
 import com.checkup.user.information.UserInformationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,9 @@ import java.util.UUID;
 @RequestMapping(value = "/api/user")
 public class UserController {
 
+    @Autowired
+    public AuthenticationFacade authenticationFacade;
+
     private final UserService userService;
 
     private final UserRepository userRepository;
@@ -28,12 +33,18 @@ public class UserController {
 
     @GetMapping(path = "/{id}", produces = {"application/json"})
     public ResponseEntity<?> getUserById(@PathVariable("id") final UUID id) {
-        return ResponseEntity.ok(userService.findById(id));
+        return ResponseEntity.ok(userService.findById(authenticationFacade.getLoggedUser().getId()));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> insert(@Valid @RequestBody final UserFORM userFORM) {
+        return ResponseEntity.ok()
+                .body(userService.insert(userFORM));
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> update(@PathVariable final UUID id, @Valid @RequestBody final UserVO userVO) {
-        userVO.setId(id);
+        userVO.setId(authenticationFacade.getLoggedUser().getId());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.update(userVO));
@@ -43,7 +54,7 @@ public class UserController {
     public ResponseEntity<?> getAllInformation(@PathVariable final UUID id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(DozerAdapter.parseListObjects(userService.findById(id).getInformation(), UserInformationVO.class));
+                .body(DozerAdapter.parseListObjects(userService.findById(authenticationFacade.getLoggedUser().getId()).getInformation(), UserInformationVO.class));
     }
 
     @GetMapping(path = "/all", produces = {"application/json"})

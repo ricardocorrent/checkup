@@ -15,6 +15,7 @@ import com.checkup.rule.RuleRepository;
 import com.checkup.rule.RuleVO;
 import com.checkup.rule.information.RuleInformation;
 import com.checkup.rule.information.RuleInformationVO;
+import com.checkup.server.AuthenticationFacade;
 import com.checkup.server.SimpleAbstractService;
 import com.checkup.server.adapter.DozerAdapter;
 import com.checkup.server.model.BaseInformation;
@@ -32,6 +33,8 @@ import com.checkup.user.UserRepository;
 import com.checkup.user.UserVO;
 import com.checkup.user.information.UserInformation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -41,6 +44,10 @@ import java.util.stream.Stream;
 
 @Service
 public class InspectionService extends SimpleAbstractService<Inspection, InspectionVO> {
+
+    @Autowired
+    public AuthenticationFacade authenticationFacade;
+
 
     private final InspectionRepository inspectionRepository;
     private final UserRepository userRepository;
@@ -80,6 +87,12 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
         return Inspection.class;
     }
 
+    @Override
+    public Page<InspectionVO> list(final Pageable pageable) {
+        final Page<Inspection> page = inspectionRepository.findAll(pageable, authenticationFacade.getLoggedUser().getId());
+        return page.map(this::convertEntityToEntityVO);
+    }
+
     public InspectionCloseVO closeInspection(final IdVO idVO) {
         final Inspection inspection = inspectionRepository.findById(idVO.getId()).orElseThrow(RegisterNotFoundException::new);
         inspectionValidator.validateIfInspectionCanBeClosed(inspection);
@@ -111,8 +124,8 @@ public class InspectionService extends SimpleAbstractService<Inspection, Inspect
         return new InspectionCloseVO(clone.getId());
     }
 
-    public List<Inspection> getAllInspections() {
-        return inspectionRepository.findAll();
+    public List<Inspection> getAllInspections(final User loggedUser) {
+        return inspectionRepository.findAll(loggedUser.getId());
     }
 
     public List<InspectionInformation> getInspectionInformation(final UUID inspectionId) {

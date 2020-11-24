@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @CrossOrigin
@@ -30,6 +31,18 @@ public class InspectionController extends SimpleAbstractController<Inspection, I
         return "title";
     }
 
+    @Override
+    public ResponseEntity<?> insert(@Valid @RequestBody final InspectionVO inspectionVO) {
+        inspectionVO.getUser().setId(authenticationFacade.getLoggedUser().getId());
+        return super.insert(inspectionVO);
+    }
+
+    @Override
+    public ResponseEntity<?> update(@PathVariable final UUID id, @RequestBody final @Valid InspectionVO inspectionVO) {
+        inspectionVO.getUser().setId(authenticationFacade.getLoggedUser().getId());
+        return super.update(id, inspectionVO);
+    }
+
     @PostMapping(path = "/{id}/close")
     public ResponseEntity<?> closeInspection(@PathVariable final UUID id) {
         return ResponseEntity
@@ -41,7 +54,7 @@ public class InspectionController extends SimpleAbstractController<Inspection, I
     public ResponseEntity<?> getAllInspections() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(DozerAdapter.parseListObjects(inspectionService.getAllInspections(), InspectionResponseVO.class));
+                .body(DozerAdapter.parseListObjects(inspectionService.getAllInspections(authenticationFacade.getLoggedUser()), InspectionResponseVO.class));
     }
 
     @GetMapping(path = "/{id}/information")

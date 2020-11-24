@@ -2,6 +2,7 @@ package com.checkup.server;
 
 import com.checkup.server.model.BaseModel;
 import com.checkup.server.model.BaseVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,15 +21,18 @@ public abstract class SimpleAbstractController<T extends BaseModel, Z extends Ba
     @Inject
     private SimpleAbstractService<T, Z> simpleAbstractService;
 
+    @Autowired
+    public AuthenticationFacade authenticationFacade;
+
     @PostMapping
-    private ResponseEntity<?> insert(@Valid @RequestBody final Z z) {
+    public ResponseEntity<?> insert(@Valid @RequestBody final Z z) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(simpleAbstractService.insert(z));
     }
 
     @DeleteMapping(path = "/{id}")
-    private ResponseEntity<?> delete(@PathVariable final UUID id) {
+    public ResponseEntity<?> delete(@PathVariable final UUID id) {
         this.simpleAbstractService.delete(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

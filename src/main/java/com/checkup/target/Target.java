@@ -4,10 +4,6 @@ import com.checkup.server.model.PrototypePhysicalBaseEntity;
 import com.checkup.target.information.TargetInformation;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.stream.Collectors;
 
