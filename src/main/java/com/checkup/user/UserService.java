@@ -4,7 +4,9 @@ import com.checkup.server.adapter.DozerAdapter;
 import com.checkup.server.permission.Permission;
 import com.checkup.server.permission.PermissionRepository;
 import com.checkup.server.validation.exception.RegisterNotFoundException;
+import com.checkup.server.validation.exception.UsernameAlreadyExistsException;
 import com.checkup.user.form.UserFORM;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -63,10 +65,14 @@ public class UserService implements UserDetailsService {
     }
 
     public UserVO insert(final UserFORM userFORM) {
-        final User user = userFORM.toUser();
-        insertPermissions(user);
-        final User savedUser = repository.save(user);
-        return DozerAdapter.parseObject(savedUser, UserVO.class);
+        try {
+            final User user = userFORM.toUser();
+            insertPermissions(user);
+            final User savedUser = repository.save(user);
+            return DozerAdapter.parseObject(savedUser, UserVO.class);
+        } catch (final DataIntegrityViolationException ex) {
+            throw new UsernameAlreadyExistsException("User name already exists in database", ex.getCause());
+        }
     }
 
     private void insertPermissions(final User user) {
