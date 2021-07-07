@@ -2,7 +2,7 @@
 CREATE TABLE "user"
 (
     id                      UUID         NOT NULL,
-    user_name               VARCHAR(255) NOT NULL,
+    user_name               VARCHAR(255) NOT NULL UNIQUE,
     full_name               VARCHAR(255) NOT NULL,
     password                VARCHAR(255) NOT NULL,
     account_non_expired     BOOLEAN DEFAULT TRUE,
@@ -59,7 +59,7 @@ CREATE TABLE rule
 CREATE TABLE item
 (
     id             UUID          NOT NULL,
-    rule_id        UUID          NOT NULL REFERENCES rule (id),
+    rule_id        UUID          NOT NULL REFERENCES rule (id) ON DELETE CASCADE,
     title          VARCHAR(100)  NOT NULL,
     description    VARCHAR(4000) NOT NULL,
     position_index INTEGER       NOT NULL,
@@ -75,14 +75,14 @@ CREATE TABLE inspection
 (
     id              UUID         NOT NULL,
     user_id         UUID         NOT NULL REFERENCES "user" (id),
-    target_id       UUID         NOT NULL REFERENCES target (id),
+    target_id       UUID         NOT NULL REFERENCES target (id) ON DELETE CASCADE,
     title           VARCHAR(100) NOT NULL,
     description     VARCHAR(255),
     draft           BOOLEAN      NOT NULL DEFAULT TRUE,
     cloned          BOOLEAN      NOT NULL DEFAULT FALSE,
     sync_quantities INTEGER,
     note            VARCHAR(4000),
-    allowed_to_sync BOOLEAN               DEFAULT FALSE,
+    allowed_to_sync BOOLEAN      DEFAULT FALSE,
     created_at      TIMESTAMPTZ  NOT NULL,
     updated_at      TIMESTAMPTZ  NOT NULL,
     PRIMARY KEY (id)
@@ -92,8 +92,8 @@ CREATE TABLE inspection
 CREATE TABLE topic
 (
     id              UUID          NOT NULL,
-    inspection_id   UUID          NOT NULL REFERENCES inspection (id),
-    item_id         UUID          NOT NULL REFERENCES item (id),
+    inspection_id   UUID          NOT NULL REFERENCES inspection (id) ON DELETE CASCADE,
+    item_id         UUID          NOT NULL REFERENCES item (id) ON DELETE CASCADE,
     print_in_report BOOLEAN       NOT NULL DEFAULT TRUE,
     cloned          BOOLEAN       NOT NULL DEFAULT FALSE,
     position_index  INTEGER       NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE attachment
 CREATE TABLE file
 (
     id             UUID          NOT NULL,
-    topic_id       UUID          NOT NULL REFERENCES topic (id),
+    topic_id       UUID          NOT NULL REFERENCES topic (id) ON DELETE CASCADE,
     attachment_id  UUID          NOT NULL REFERENCES attachment (id),
     active         BOOLEAN       NOT NULL DEFAULT TRUE,
     note           VARCHAR(4000) NULL,
@@ -147,7 +147,7 @@ CREATE TABLE user_information
 CREATE TABLE target_information
 (
     id             UUID          NOT NULL,
-    target_id      UUID          NOT NULL REFERENCES target (id),
+    target_id      UUID          NOT NULL REFERENCES target (id) ON DELETE CASCADE,
     title          VARCHAR(100)  NOT NULL,
     description    VARCHAR(4000) NOT NULL,
     position_index INTEGER       NOT NULL,
@@ -161,7 +161,7 @@ CREATE TABLE target_information
 CREATE TABLE rule_information
 (
     id             UUID          NOT NULL,
-    rule_id        UUID          NOT NULL REFERENCES rule (id),
+    rule_id        UUID          NOT NULL REFERENCES rule (id) ON DELETE CASCADE,
     title          VARCHAR(100)  NOT NULL,
     description    VARCHAR(4000) NOT NULL,
     position_index INTEGER       NOT NULL,
@@ -175,7 +175,7 @@ CREATE TABLE rule_information
 CREATE TABLE item_information
 (
     id             UUID          NOT NULL,
-    item_id        UUID          NOT NULL REFERENCES item (id),
+    item_id        UUID          NOT NULL REFERENCES item (id) ON DELETE CASCADE,
     title          VARCHAR(100)  NOT NULL,
     description    VARCHAR(4000) NOT NULL,
     position_index INTEGER       NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE item_information
 CREATE TABLE inspection_information
 (
     id             UUID          NOT NULL,
-    inspection_id  UUID          NOT NULL REFERENCES inspection (id),
+    inspection_id  UUID          NOT NULL REFERENCES inspection (id) ON DELETE CASCADE,
     title          VARCHAR(100)  NOT NULL,
     description    VARCHAR(4000) NOT NULL,
     position_index INTEGER       NOT NULL,

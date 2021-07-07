@@ -14,4 +14,7 @@ public interface TargetRepository extends PagingAndSortingRepository<Target, UUI
     @Query("select t from Target t where t.name like lower(concat ('%', :name, '%'))")
     Page<Target> findTargetByName(@Param("name") final String name, final Pageable pageable);
 
+    @Override
+    @Query("select t from Target t where t.cloned = false")
+    Page<Target> findAll(Pageable pageable);
 }

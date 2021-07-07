@@ -200,22 +200,3 @@ INSERT INTO inspection_information (id, inspection_id, title, description, posit
 INSERT INTO topic (id, inspection_id, item_id, print_in_report, cloned, position_index, note, created_at, updated_at) VALUES
     ('2458dd1b-ff5d-43a7-907f-40667a627807', '055703e6-60aa-4beb-a4c8-fd1815e16abb', '33596276-35a3-4980-adc2-06febc10a229', true, false, 0, '', now(), now()),
     ('728a4e77-2749-47be-a222-4e259c3812b0', '055703e6-60aa-4beb-a4c8-fd1815e16abb', 'b3ddea9b-08c5-46c2-82fe-2a7ae7ab75ed', true, false, 0, '', now(), now());
-
--- ATTACHMENT
-INSERT INTO attachment (id, "data", file_name, file_type, created_at, updated_at) VALUES
-    ('13e207ce-8e78-41eb-aeb8-bd28224f71c2', 26615, 'cat.jpg', 'image/jpeg', now(), now()),
-    ('f5897b44-2b13-43b9-831b-24fd3bc0b66a', 27108, 'cortador-de-frios.webp', 'image/webp', now(), now()),
-    ('282d1272-1f07-4f1f-9804-fac5fd593de9', 27109, 'forno.jpg', 'image/jpeg', now(), now()),
-    ('82ca967b-22c1-456f-8a42-c9e5a4425244', 27110, 'expositor-de-vidro.jpg', 'image/jpeg', now(), now()),
-    ('36043649-ff4f-4996-87f3-f800bbd7a9a6', 27111, 'carteira-de-trabalho.jpg', 'image/jpeg', now(), now()),
-    ('55d6aa35-856b-4c93-bb2a-be2a1857e648', 27112, 'forno-pizza.jpg',	'image/jpeg', now(), now()),
-    ('ac905081-da1e-4061-8c4f-2cdb8c3271b8', 27113, 'boring-cat.jpg', 'image/jpeg', now(), now());
-
-INSERT INTO file (id, topic_id, attachment_id, active, note, position_index, created_at, updated_at) VALUES
-    ('6f721b7a-6677-4e60-bfa9-7622e2ae963e', '2458dd1b-ff5d-43a7-907f-40667a627807', '13e207ce-8e78-41eb-aeb8-bd28224f71c2', true, '', 0, now(), now()),
-    ('84576aee-686d-4dee-b020-d10623eff273', '2458dd1b-ff5d-43a7-907f-40667a627807', 'f5897b44-2b13-43b9-831b-24fd3bc0b66a', true, '', 2, now(), now()),
-    ('7b44ef32-53b5-4049-af09-a4950ee4eedc', '2458dd1b-ff5d-43a7-907f-40667a627807', '282d1272-1f07-4f1f-9804-fac5fd593de9', true, '', 3, now(), now()),
-    ('9aa8131a-1925-4a30-87eb-6b0e2acac63c', '728a4e77-2749-47be-a222-4e259c3812b0', '82ca967b-22c1-456f-8a42-c9e5a4425244', true, '', 0, now(), now()),
-    ('fcc4595d-f923-4c18-a9e2-dbcdcaa13b68', '728a4e77-2749-47be-a222-4e259c3812b0', '36043649-ff4f-4996-87f3-f800bbd7a9a6', true, '', 1, now(), now()),
-    ('090f8ef2-78e8-4171-8ca5-bf19724dde82', '728a4e77-2749-47be-a222-4e259c3812b0', '55d6aa35-856b-4c93-bb2a-be2a1857e648', true, '', 2, now(), now()),
-    ('6772912e-f9d0-4826-aae1-12b81163c22b', '728a4e77-2749-47be-a222-4e259c3812b0', 'ac905081-da1e-4061-8c4f-2cdb8c3271b8', true, '', 3, now(), now());

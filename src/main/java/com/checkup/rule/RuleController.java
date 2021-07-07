@@ -26,7 +26,7 @@ public class RuleController extends SimpleAbstractController<Rule, RuleVO> {
 
     @Override
     protected String getListAllSortProperty() {
-        return "information.positionIndex";
+        return "title";
     }
 
     @GetMapping(path = "/{id}/items")

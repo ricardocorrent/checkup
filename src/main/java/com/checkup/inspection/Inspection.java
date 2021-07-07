@@ -55,10 +55,6 @@ public class Inspection extends PrototypePhysicalBaseEntity {
     @JoinColumn(name = "target_id")
     private Target target;
 
-    @JsonIgnore
-    @OneToMany
-    private List<Topic> topics;
-
     public Inspection() {
     }
 
@@ -160,14 +156,6 @@ public class Inspection extends PrototypePhysicalBaseEntity {
 
     public void setTarget(final Target target) {
         this.target = target;
-    }
-
-    public List<Topic> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(final List<Topic> topics) {
-        this.topics = topics;
     }
 
     @Override

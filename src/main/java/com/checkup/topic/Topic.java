@@ -36,10 +36,6 @@ public class Topic extends PrototypePhysicalBaseEntity {
     @Size(max = 4000)
     private String note;
 
-    @JsonIgnore
-    @OneToMany
-    private List<File> files;
-
     public Topic() {
     }
 
@@ -103,13 +99,5 @@ public class Topic extends PrototypePhysicalBaseEntity {
 
     public void setNote(final String note) {
         this.note = note;
-    }
-
-    public List<File> getFiles() {
-        return files;
-    }
-
-    public void setFiles(final List<File> files) {
-        this.files = files;
     }
 }
